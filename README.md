@@ -6,12 +6,12 @@
 3. demarrage docker (sudo service docker start)
 4. definition d'alias docker (alias docker='sudo docker')
 5. creation de comptes/groupes/sudos (en root)
-sudo bash
-for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; echo $userlogin | passwd --stdin $userlogin ; done
-visudo (ajouter ceci)
-  ALL ALL=(root) NOPASSWD: /bin/docker
-exit
-
+sudo bash  
+for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; echo $userlogin | passwd --stdin $userlogin ; done  
+visudo (ajouter ceci)  
+  ALL ALL=(root) NOPASSWD: /bin/docker  
+exit  
+  
 # mise en place du workspace de developpement
 1. recuperation du projet server : https://github.com/Finaxys/bluebank-atm-server.git en repo public
 2. TODO etapes de dev

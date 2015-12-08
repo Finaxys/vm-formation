@@ -28,7 +28,7 @@ useradd che
 
 ## mise en place de l'IC (dev/ops)
 1. connexion a la VM par le compte traineegrp<ID>
-2. demarrage d'un conteneur docker jenkins : docker run -p 808<ID>:8080 -p 5000<ID>:50000 jenkins, le lien http://<VM>:8080
+2. demarrage d'un conteneur docker jenkins : docker run -p 808{ID}:8080 -p 5000{ID}:50000 jenkins, le lien http://{hostname}:8080
 3. description positionnee : THIS MESSAGE APPEARS IF THE CONTAINER IS PERSISTED
 5. Arrêt du conteneur (ctrl + c) puis redemarrage avec la meme commande : la description n'apparait plus sur la page
 6. description repositionnee : THIS MESSAGE APPEARS IF THE CONTAINER IS PERSISTED

@@ -14,9 +14,6 @@ exit
 6. ajout des comptes dans le groupe dockerroot (/etc/group) dockerroot:x:1009:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5
 7. ajout de l'option -G dockerroot dans /etc/sysconfig/docker
 
-## installation codenvy
-
-
 ## mise en place du workspace de developpement
 1. recuperation du projet server : https://github.com/Finaxys/bluebank-atm-server.git en repo public
 2. TODO etapes de dev

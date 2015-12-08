@@ -2,7 +2,7 @@
 
 ## creation envt de developpement
 1. crea compte perso sur la VM
-2. installation docker (sudo yum install docker) et java8 (sudo yum install java)
+2. installation docker (sudo yum install docker), git (sudo yum install git) et java8 (sudo yum install java)
 3. demarrage docker (sudo service docker start)
 4. definition d'alias docker (alias docker='sudo docker')
 5. creation de comptes/groupes/sudos (en root)
@@ -18,4 +18,7 @@ exit
 
 # mise en place de l'IC
 1. connexion a la VM par le compte traineegrp<ID>
-2. demarrage d'un conteneur docker jenkins : docker run -p 808<ID>:8080 -p 5000<ID>:50000 -v /home/traineegrp<ID>/jenkins_home jenkins
+2. demarrage d'un conteneur docker jenkins : docker run -p 808<ID>:8080 -p 5000<ID>:50000 jenkins
+3. creation d'un item (job) puis arret/demarrage du conteneur : plus rien
+4. demarrage avec l'option de volume : docker run -p 808<ID>:8080 -p 5000<ID>:50000 -v /home/traineegrp<ID>:/var/jenkins_home jenkins 
+NE MARCHE PAS : a  corriger

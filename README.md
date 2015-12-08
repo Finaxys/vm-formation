@@ -1,6 +1,6 @@
-## vm-formation (centos 7)
+# vm-formation (centos 7)
 
-# creation envt de developpement
+## creation envt de developpement
 1. crea compte perso sur la VM
 2. installation docker (sudo yum install docker), git (sudo yum install git) et java8 (sudo yum install java)
 3. demarrage docker (sudo service docker start)
@@ -14,14 +14,14 @@ exit
 6. ajout des comptes dans le groupe dockerroot (/etc/group) dockerroot:x:1009:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5
 7. ajout de l'option -G dockerroot dans /etc/sysconfig/docker
 
-# installation codenvy
+## installation codenvy
 
 
-# mise en place du workspace de developpement
+## mise en place du workspace de developpement
 1. recuperation du projet server : https://github.com/Finaxys/bluebank-atm-server.git en repo public
 2. TODO etapes de dev
 
-# mise en place de l'IC
+## mise en place de l'IC
 1. connexion a la VM par le compte traineegrp<ID>
 2. demarrage d'un conteneur docker jenkins : docker run -p 808<ID>:8080 -p 5000<ID>:50000 jenkins, le lien http://<VM>:8080
 3. description positionnee : THIS MESSAGE APPEARS IF THE CONTAINER IS PERSISTED

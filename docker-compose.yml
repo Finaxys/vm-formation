@@ -5,7 +5,7 @@ jenkins:
    - "500${TRAINEEGRPID}:5000"
   container_name: traineegrp${TRAINEEGRPID}-jenkins
 sonar:
-  image: sonar
+  image: sonarqube
   ports:
   - "900${TRAINEEGRPID}:9000"
   - "901${TRAINEEGRPID}:9092"

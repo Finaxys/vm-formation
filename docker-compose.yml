@@ -1,5 +1,5 @@
 jenkins:
-  image: jenkins
+  build: custom-jenkins
   ports:
    - "808${TRAINEEGRPID}:8080"
    - "500${TRAINEEGRPID}:5000"
@@ -10,4 +10,3 @@ sonar:
   - "900${TRAINEEGRPID}:9000"
   - "901${TRAINEEGRPID}:9092"
   container_name: traineegrp${TRAINEEGRPID}-sonarqube
-  

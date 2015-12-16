@@ -12,8 +12,8 @@ visudo (ajouter ceci)
   ALL ALL=(root) NOPASSWD: /bin/docker  
 exit  
 
-6. ajout des comptes dans le groupe dockerroot (/etc/group) dockerroot:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5
-7. ajout de l'option -G dockerroot dans /etc/sysconfig/docker
+6. ajout des comptes dans le groupe docker (/etc/group) docker:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5
+7. ajout de l'option -G docker dans /etc/sysconfig/docker
 
 ## mise en place du backlog (manager/ba)
 1. crea de comptes github pour tout le monde
@@ -36,4 +36,4 @@ exit
 7. Arrêt du conteneur (ctrl + c) puis redemarrage avec l'option start : docker ps -a && docker start <id du conteneur> 
 => le message est conservé cette fois
 8. sur le meme principe, creation d'un conteneur sonar :  docker run -d --name traineegrp{ID}-sonarqube -p 900{ID}:9000 -p 909{ID}:9092 sonarqube ? NON
-9. Recup du package formation + docker-compose up
+9. Recup du package formation (git clone)+ creation des images ( docker-compose

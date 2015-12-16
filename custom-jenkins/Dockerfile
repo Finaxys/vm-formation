@@ -7,8 +7,9 @@ USER root
 RUN apt-get update && apt-get install -y git
 # PROTOBUF INSTALL WITH APT-GET : DOES NOT WORK ON THE JENKINS BASE IMAGE
 RUN apt-get install -y protobuf-compiler
-# PUPPET INSTALL
+# PUPPET WITH JENKINS SPECIFIC MODULE INSTALL 
 RUN apt-get install -y puppet
+RUN puppet module install rtyler-jenkins
 
 # PROTOBUF INSTALL "A LA MANO"
 #RUN apt-get --help

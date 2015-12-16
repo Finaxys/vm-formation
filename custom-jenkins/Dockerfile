@@ -3,17 +3,17 @@ FROM jenkins
 # NEED TO BE ROOT FOR APT INSTALLS
 USER root
 
+# GIT INSTALL
+RUN apt-get install -y git
+
 # PROTOBUF INSTALL WITH APT-GET : DOES NOT WORK ON THE JENKINS BASE IMAGE
 # RUN apt-get install -y protobuf-compiler
 
 # PROTOBUF INSTALL "A LA MANO"
-RUN apt-get install gcc g++
+RUN apt-get --help
 RUN wget https://protobuf.googlecode.com/files/protobuf-2.4.1.tar.gz
 RUN tar -xzvf protobuf-2.4.1.tar.gz
 RUN cd protobuf-2.4.1 && ./configure --prefix=/ && make && make install
-
-# GIT INSTALL
-RUN apt-get install -y git
 
 # GET BACK TO STANDARD USER
 USER jenkins

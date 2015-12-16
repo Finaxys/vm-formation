@@ -2,7 +2,7 @@
 
 ## prepa des envts de developpement (staff)
 1. crea compte perso sur la VM
-2. installation docker (sudo yum install docker), git (sudo yum install git) et java8 (sudo yum install java)
+2. en root, installation docker (wget -qO- https://get.docker.com/ | sh), docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose), git (sudo yum install git) et java8 (sudo yum install java)
 3. demarrage docker (sudo service docker start)
 4. definition d'alias docker (alias docker='sudo docker')
 5. creation de comptes/groupes/sudos (en root)
@@ -11,7 +11,7 @@ for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; ec
 visudo (ajouter ceci)  
   ALL ALL=(root) NOPASSWD: /bin/docker  
 exit  
-useradd che 
+
 6. ajout des comptes dans le groupe dockerroot (/etc/group) dockerroot:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5
 7. ajout de l'option -G dockerroot dans /etc/sysconfig/docker
 
@@ -35,5 +35,5 @@ useradd che
 6. description repositionnee : THIS MESSAGE APPEARS IF THE CONTAINER IS PERSISTED
 7. Arrêt du conteneur (ctrl + c) puis redemarrage avec l'option start : docker ps -a && docker start <id du conteneur> 
 => le message est conservé cette fois
-8. sur le meme principe, creation d'un conteneur sonar :  docker run -d --name traineegrp{ID}-sonarqube -p 900{ID}:9000 -p 909{ID}:9092 sonarqube
-9. 
+8. sur le meme principe, creation d'un conteneur sonar :  docker run -d --name traineegrp{ID}-sonarqube -p 900{ID}:9000 -p 909{ID}:9092 sonarqube ? NON
+9. Recup du package formation + docker-compose up

@@ -1,0 +1,13 @@
+jenkins:
+  image: jenkins
+  ports:
+   - "808${TRAINEEGRPID}:8080"
+   - "500${TRAINEEGRPID}:5000"
+  name: traineegrp${TRAINEEGRPID}-jenkins
+sonar:
+  image: sonar
+  ports:
+  - "900${TRAINEEGRPID}:9000"
+  - "901${TRAINEEGRPID}:9092"
+  name: traineegrp${TRAINEEGRPID}-sonarqube
+  

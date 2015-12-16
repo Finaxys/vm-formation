@@ -7,7 +7,7 @@ USER root
 # RUN apt-get install -y protobuf-compiler
 
 # PROTOBUF INSTALL "A LA MANO"
-RUN apt-get install build-essential
+RUN apt-get install gcc g++
 RUN wget https://protobuf.googlecode.com/files/protobuf-2.4.1.tar.gz
 RUN tar -xzvf protobuf-2.4.1.tar.gz
 RUN cd protobuf-2.4.1 && ./configure --prefix=/ && make && make install

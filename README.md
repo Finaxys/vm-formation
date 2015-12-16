@@ -28,6 +28,8 @@ exit
 3. build maven : creer des configurations de build pour : compilation et tests u, execution et generation des rapports BDD, execution des rapports de mutation testing
 
 ## mise en place de l'IC (dev/ops)
+0. Creation d'un compte docker.io (prendre le github)
+docker login
 1. connexion a la VM par le compte traineegrp<ID>
 2. demarrage d'un conteneur docker jenkins : docker run -p 808{ID}:8080 -p 5000{ID}:50000 --name=traineegrp{ID}-jenkins jenkins, le lien http://{hostname}:8080
 3. description positionnee : THIS MESSAGE APPEARS IF THE CONTAINER IS PERSISTED

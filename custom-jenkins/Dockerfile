@@ -5,9 +5,10 @@ USER root
 
 # GIT INSTALL
 RUN apt-get update && apt-get install -y git
-
 # PROTOBUF INSTALL WITH APT-GET : DOES NOT WORK ON THE JENKINS BASE IMAGE
 RUN apt-get install -y protobuf-compiler
+# PUPPET INSTALL
+RUN apt-get install puppet
 
 # PROTOBUF INSTALL "A LA MANO"
 #RUN apt-get --help

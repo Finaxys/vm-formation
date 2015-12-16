@@ -4,7 +4,7 @@ FROM jenkins
 USER root
 
 # PROTOBUF INSTALL WITH APT-GET : DOES NOT WORK ON THE JENKINS BASE IMAGE
-RUN apt-get install -y protobuf-compiler
+# RUN apt-get install -y protobuf-compiler
 
 # PROTOBUF INSTALL "A LA MANO"
 RUN apt-get install g++

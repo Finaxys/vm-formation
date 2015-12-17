@@ -2,7 +2,7 @@
 
 ## prepa des envts de developpement (staff)
 1. crea compte perso sur la VM
-2. en root, installation docker (wget -qO- https://get.docker.com/ | sh), docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose), git (sudo yum install git) et java8 (sudo yum install java)
+2. en root, installation docker (wget -qO- https://get.docker.com/ | sh), docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose), git (sudo yum install git), java8 (sudo yum install java), puppet (rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm)
 3. demarrage docker (sudo service docker start)
 4. definition d'alias docker (alias docker='sudo docker')
 5. creation de comptes/groupes/sudos (en root)
@@ -38,4 +38,6 @@ docker login
 7. Arrêt du conteneur (ctrl + c) puis redemarrage avec l'option start : docker ps -a && docker start <id du conteneur> 
 => le message est conservé cette fois
 8. sur le meme principe, creation d'un conteneur sonar :  docker run -d --name traineegrp{ID}-sonarqube -p 900{ID}:9000 -p 909{ID}:9092 sonarqube ? NON
-9. Recup du package formation (git clone)+ creation des images ( docker-compose
+9. Recup du package formation (git clone)+ creation des images ( docker-compose up)
+10. Modif de la description sur le jenkins : HELLO DOCKER-COMPOSE
+11. Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)

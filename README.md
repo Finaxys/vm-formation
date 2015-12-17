@@ -2,7 +2,7 @@
 
 ## prepa des envts de developpement (staff)
 1. crea compte perso sur la VM
-2. en root, installation docker (wget -qO- https://get.docker.com/ | sh), docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose), git (sudo yum install git), java8 (sudo yum install java), puppet (rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm)
+2. en root, installation docker (wget -qO- https://get.docker.com/ | sh), docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose), git (sudo yum install git), java8 (sudo yum install java), puppet (rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && yes | yum -y install puppet)
 3. demarrage docker (sudo service docker start)
 4. definition d'alias docker (alias docker='sudo docker')
 5. creation de comptes/groupes/sudos (en root)

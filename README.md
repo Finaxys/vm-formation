@@ -11,6 +11,11 @@ for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; ec
 visudo (ajouter ceci)  
   ALL ALL=(root) NOPASSWD: /bin/docker  
 exit  
+6. creation d'alias docker pour faciliter les choses
+sudo vi /etc/profile.d/dockercmds.sh
+contenu:
+alias dockerrmall='docker ps -a | awk '"'"'{print $1}'"'"' | grep -v CONTAINER | xargs docker rm'
+alias dockerstopall='docker ps | awk '"'"'{print $1}'"'"' | grep -v CONTAINER | xargs docker stop'
 
 6. ajout des comptes dans le groupe docker (/etc/group) docker:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5
 7. ajout de l'option -G docker dans /etc/sysconfig/docker

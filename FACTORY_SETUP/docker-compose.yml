@@ -4,9 +4,15 @@ jenkins:
    - "808${TRAINEEGRPID}:8080"
    - "500${TRAINEEGRPID}:5000"
   container_name: traineegrp${TRAINEEGRPID}-jenkins
+nexus:
+  image: "sonatype/nexus:2.11.2-06"
+  ports:
+  - "809${TRAINEEGRPID}:8081"
+  container_name: traineegrp${TRAINEEGRPID}-nexus
 sonar:
-  image: sonarqube
+  image: "sonarqube:5.2"
   ports:
   - "900${TRAINEEGRPID}:9000"
   - "901${TRAINEEGRPID}:9092"
   container_name: traineegrp${TRAINEEGRPID}-sonarqube
+

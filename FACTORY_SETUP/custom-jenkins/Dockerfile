@@ -1,4 +1,4 @@
-FROM jenkins
+FROM jenkins:1.625.3
 
 # NEED TO BE ROOT FOR APT INSTALLS
 USER root

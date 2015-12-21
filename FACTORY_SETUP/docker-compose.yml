@@ -15,4 +15,9 @@ sonar:
   - "900${TRAINEEGRPID}:9000"
   - "901${TRAINEEGRPID}:9092"
   container_name: traineegrp${TRAINEEGRPID}-sonarqube
-
+elk:
+  image: "elasticsearch:2.1.1"
+  ports:
+  - "920${TRAINEEGRPID}:9200"
+  - "930${TRAINEEGRPID}:9300"
+  container_name: traineegrp${TRAINEEGRPID}-elk

@@ -3,21 +3,21 @@
 ## creation d'un compte perso sur la VM avec droits de sudo root 
 
 ## prepa des envts de developpement (staff) a faire en sudo root
-. installation docker (wget -qO- https://get.docker.com/ | sh), docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose), git (sudo yum install git), java8 (sudo yum install java), puppet (rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && yes | yum -y install puppet)
-. demarrage docker (sudo service docker start)
-. creation de comptes/groupes/sudos (en root)
+. installation docker (wget -qO- https://get.docker.com/ | sh), docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose), git (sudo yum install git), java8 (sudo yum install java), puppet (rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && yes | yum -y install puppet)  
+. demarrage docker (sudo service docker start)  
+. creation de comptes/groupes/sudos (en root)  
 sudo bash 
 for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; echo $userlogin | passwd --stdin $userlogin ; done  
 visudo (ajouter ceci)  
   ALL ALL=(root) NOPASSWD: /bin/docker  
 exit  
-. creation d'alias docker pour faciliter les choses
-sudo vi /etc/profile.d/dockercmds.sh
-contenu:
-alias dockerrmall='docker ps -a | awk '"'"'{print $1}'"'"' | grep -v CONTAINER | xargs docker rm'
-alias dockerstopall='docker ps | awk '"'"'{print $1}'"'"' | grep -v CONTAINER | xargs docker stop'
-. ajout des comptes dans le groupe docker (/etc/group) docker:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5
-
+. creation d'alias docker pour faciliter les choses  
+sudo vi /etc/profile.d/dockercmds.sh  
+contenu:  
+alias dockerrmall='docker ps -a | awk '"'"'{print $1}'"'"' | grep -v CONTAINER | xargs docker rm'  
+alias dockerstopall='docker ps | awk '"'"'{print $1}'"'"' | grep -v CONTAINER | xargs docker stop'  
+. ajout des comptes dans le groupe docker (/etc/group)   docker:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5  
+  
 ## mise en place du backlog (manager/ba)
 . crea de comptes github pour tout le monde
 . crea d'une orga github avec les 3 amigos + staff

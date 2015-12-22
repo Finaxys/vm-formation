@@ -17,8 +17,9 @@ exit
 - creation d'alias docker pour faciliter les choses  
 sudo vi /etc/profile.d/dockercmds.sh  
 contenu:  
-alias dockerrmall='docker ps -a | awk '"'"'{print $1}'"'"' | grep -v CONTAINER | xargs docker rm'  
-alias dockerstopall='docker ps | awk '"'"'{print $1}'"'"' | grep -v CONTAINER | xargs docker stop'  
+alias dockerstopall='docker ps | grep -v CONTAINER | awk '"'"'{print $1}'"'"' | xargs docker stop'  
+alias dockerrmall='docker ps -a | grep -v CONTAINER | awk '"'"'{print $1}'"'"' | xargs docker rm'  
+alias dockerrmiall='docker images | grep -v "IMAGE ID" | awk '"'"'{print $3}'"'"' | xargs docker rmi'  
 - ajout des comptes dans le groupe docker (/etc/group)   docker:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5  
   
 ## mise en place du backlog (manager/ba)

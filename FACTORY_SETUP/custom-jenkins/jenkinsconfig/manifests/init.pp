@@ -37,5 +37,10 @@
 #
 class jenkinsconfig {
 
+  #include jenkins
+
+  jenkins::plugin { 'git':
+    version => '1.1.11',
+  }
 
 }

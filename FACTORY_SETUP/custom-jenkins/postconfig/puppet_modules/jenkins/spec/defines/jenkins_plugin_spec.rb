@@ -11,7 +11,7 @@ describe 'jenkins::plugin' do
         :user => 'jenkins',
       )
     end
-    it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
+    it { should contain_file('/var/jenkins_home/plugins/myplug.hpi')}
   end
 
   describe 'with version' do
@@ -23,7 +23,7 @@ describe 'jenkins::plugin' do
         :user => 'jenkins',
       )
     end
-    it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
+    it { should contain_file('/var/jenkins_home/plugins/myplug.hpi')}
   end
 
   describe 'with version and in middle of jenkins_plugins fact' do
@@ -31,7 +31,7 @@ describe 'jenkins::plugin' do
     before { facts[:jenkins_plugins] = 'myplug 1.2.3, fooplug 1.4.5' }
 
     it { should_not contain_archive__download('myplug.hpi') }
-    it { should_not contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
+    it { should_not contain_file('/var/jenkins_home/plugins/myplug.hpi')}
   end
 
   describe 'with version and at end of jenkins_plugins fact' do
@@ -39,15 +39,15 @@ describe 'jenkins::plugin' do
     before { facts[:jenkins_plugins] = 'fooplug 1.4.5, myplug 1.2.3' }
 
     it { should_not contain_archive__download('myplug.hpi') }
-    it { should_not contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
+    it { should_not contain_file('/var/jenkins_home/plugins/myplug.hpi')}
   end
 
   describe 'with enabled is false' do
     let(:params) { { :enabled => false } }
 
     it { should contain_archive__download('myplug.hpi') }
-    it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
-    it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi.disabled').with({
+    it { should contain_file('/var/jenkins_home/plugins/myplug.hpi')}
+    it { should contain_file('/var/jenkins_home/plugins/myplug.hpi.disabled').with({
       :ensure => 'present',
       :owner  => 'jenkins',
       :group  => 'jenkins',
@@ -58,8 +58,8 @@ describe 'jenkins::plugin' do
     let(:params) { { :enabled => true } }
 
     it { should contain_archive__download('myplug.hpi') }
-    it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
-    it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi.disabled').with({
+    it { should contain_file('/var/jenkins_home/plugins/myplug.hpi')}
+    it { should contain_file('/var/jenkins_home/plugins/myplug.hpi.disabled').with({
       :ensure => 'absent',
       :owner  => 'jenkins',
       :group  => 'jenkins',
@@ -144,7 +144,7 @@ describe 'jenkins::plugin' do
           :url  => 'http://e.org/myplug.hpi',
           :user => 'jenkins',
         )
-        .that_requires('File[/var/lib/jenkins/plugins]')
+        .that_requires('File[/var/jenkins_home/plugins]')
       end
     end
 
@@ -188,7 +188,7 @@ describe 'jenkins::plugin' do
 
     context 'default params' do
       it do
-        should contain_file('/var/lib/jenkins/plugins/foo.hpi.pinned').with(
+        should contain_file('/var/jenkins_home/plugins/foo.hpi.pinned').with(
           :owner => 'jenkins',
           :group => 'jenkins',
         ).that_requires('Archive::Download[foo.hpi]')
@@ -199,7 +199,7 @@ describe 'jenkins::plugin' do
       let(:params) {{ :source => 'foo.jpi' }}
 
       it do
-        should contain_file('/var/lib/jenkins/plugins/foo.jpi.pinned').with(
+        should contain_file('/var/jenkins_home/plugins/foo.jpi.pinned').with(
           :owner => 'jenkins',
           :group => 'jenkins',
         ).that_requires('Archive::Download[foo.jpi]')

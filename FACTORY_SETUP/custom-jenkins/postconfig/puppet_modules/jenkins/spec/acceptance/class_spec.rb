@@ -57,7 +57,7 @@ describe 'jenkins class' do
       it { should be_enabled }
     end
 
-    describe file('/var/lib/jenkins/config.xml') do
+    describe file('/var/jenkins_home/config.xml') do
       it { should contain '  <numExecutors>42</numExecutors>' }
     end
   end # executors
@@ -86,7 +86,7 @@ describe 'jenkins class' do
         it { should be_enabled }
       end
 
-      describe file('/var/lib/jenkins/config.xml') do
+      describe file('/var/jenkins_home/config.xml') do
         it { should contain '  <slaveAgentPort>7777</slaveAgentPort>' }
       end
     end # slaveagentport

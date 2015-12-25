@@ -19,7 +19,7 @@ describe 'jenkins class' do
     end
 
     # Check Git Plugin Installed
-    describe file('/var/lib/jenkins/plugins/git.hpi') do
+    describe file('/var/jenkins_home/plugins/git.hpi') do
       it { should be_file }
     end
 

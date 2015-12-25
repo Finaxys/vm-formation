@@ -37,8 +37,7 @@
 #
 node 'default' {
 
-  # include jenkins : replaced by hacked module for path compliance
-  include sgujenkins
+  include jenkins
 
   jenkins::plugin { 'git':
     version => '1.1.11',

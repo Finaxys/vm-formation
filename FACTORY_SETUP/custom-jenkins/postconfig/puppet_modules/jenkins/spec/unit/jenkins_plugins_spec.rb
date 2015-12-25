@@ -14,7 +14,7 @@ describe Puppet::Jenkins::Plugins do
     end
 
     context 'if jenkins exists' do
-      let(:home) { '/var/lib/jenkins' }
+      let(:home) { '/var/jenkins_home' }
       let(:dir_exists) { false }
 
       before :each do

@@ -67,7 +67,7 @@ describe 'jenkins', :type => :module do
 
     describe 'localstatedir =>' do
       context 'undef' do
-        it { should contain_file('/var/lib/jenkins') }
+        it { should contain_file('/var/jenkins_home') }
       end
 
       context '/dne' do
@@ -170,7 +170,7 @@ describe 'jenkins', :type => :module do
           should contain_user('jenkins').with(
             :ensure     => 'present',
             :gid        => 'jenkins',
-            :home       => '/var/lib/jenkins',
+            :home       => '/var/jenkins_home',
             :managehome => false,
             :system     => true,
           )
@@ -184,7 +184,7 @@ describe 'jenkins', :type => :module do
           should contain_user('bob').with(
             :ensure     => 'present',
             :gid        => 'jenkins',
-            :home       => '/var/lib/jenkins',
+            :home       => '/var/jenkins_home',
             :managehome => false,
             :system     => true,
           )
@@ -256,9 +256,9 @@ describe 'jenkins', :type => :module do
 
     describe 'manages state dirs' do
       [
-        '/var/lib/jenkins',
-        '/var/lib/jenkins/jobs',
-        '/var/lib/jenkins/plugins',
+        '/var/jenkins_home',
+        '/var/jenkins_home/jobs',
+        '/var/jenkins_home/plugins',
       ].each do |dir|
         it do
           should contain_file(dir).with(

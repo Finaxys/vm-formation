@@ -44,7 +44,7 @@
 # config_hash = undef (Default)
 #   Hash with config options to set in sysconfig/jenkins defaults/jenkins
 #
-# localstatedir = '/var/lib/jenkins' (default)
+# localstatedir = '/var/jenkins_home' (default)
 #   base path, in the autoconf sense, for jenkins local data including jobs and
 #   plugins
 #

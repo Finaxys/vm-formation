@@ -47,7 +47,7 @@ EOS
       #apply_manifest(pp, :catch_changes => true)
     end
 
-    describe file('/var/lib/jenkins/jobs/test-build-job/config.xml') do
+    describe file('/var/jenkins_home/jobs/test-build-job/config.xml') do
       it { should be_file }
       it { should be_owned_by 'jenkins' }
       it { should be_grouped_into 'jenkins' }
@@ -75,7 +75,7 @@ EOS
       #apply_manifest(pp, :catch_changes => true)
     end
 
-    describe file('/var/lib/jenkins/jobs/test-build-job/config.xml') do
+    describe file('/var/jenkins_home/jobs/test-build-job/config.xml') do
       it { should be_file }
       it { should be_owned_by 'jenkins' }
       it { should be_grouped_into 'jenkins' }
@@ -116,7 +116,7 @@ EOS
       #apply_manifest(pp, :catch_changes => true)
     end
 
-    describe file('/var/lib/jenkins/jobs/test-build-job/config.xml') do
+    describe file('/var/jenkins_home/jobs/test-build-job/config.xml') do
       # XXX Serverspec::Type::File doesn't support exists?
       it { should_not be_file }
     end

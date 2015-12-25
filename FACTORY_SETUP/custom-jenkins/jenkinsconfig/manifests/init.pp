@@ -35,12 +35,13 @@
 #
 # Copyright 2015 Your name here, unless otherwise noted.
 #
-class jenkinsconfig {
+node 'default' {
 
-  #include jenkins
+  # include jenkins : replaced by hacked module for path compliance
+  include sgujenkins
 
   jenkins::plugin { 'git':
     version => '1.1.11',
   }
-
+  
 }

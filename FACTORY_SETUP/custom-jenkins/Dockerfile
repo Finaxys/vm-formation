@@ -8,10 +8,13 @@ RUN apt-get update && apt-get install -y git
 # PROTOBUF INSTALL WITH APT-GET
 RUN apt-get install -y protobuf-compiler
 # PUPPET WITH JENKINS SPECIFIC MODULE INSTALL 
+ENV JENKINS_HOME /var/lib/jenkins
 RUN apt-get install -y puppet
-RUN puppet module install rtyler-jenkins
-COPY ./jenkins_custom $HOME/
-
+# RUN puppet module install rtyler-jenkins : original module points to /var/lib/jenkins whereas docker image uses /var/jenkins! 
+# => hacked
+COPY ./jenkinsconfig /tmp/jenkinsconfig
+COPY ./jenkinsconfig /tmp/jenkinsconfig
+RUN puppet apply /tmp/jenkinsconfig/manifests/init.pp
 
 # PROTOBUF INSTALL "A LA MANO"
 #RUN apt-get --help

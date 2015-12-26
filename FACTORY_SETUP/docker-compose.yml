@@ -1,5 +1,5 @@
 jenkins:
-  build: ./custom-jenkins
+  build: ./01-custom-jenkins
   ports:
    - "808${TRAINEEGRPID}:8080"
    - "500${TRAINEEGRPID}:5000"

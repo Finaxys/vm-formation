@@ -7,7 +7,9 @@
 - installation docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose)  
 - installation git (sudo yum install git), java8 (sudo yum install java)  
 - installation puppet (rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && yes | yum -y install puppet)  
-- demarrage docker (sudo service docker start)  
+- demarrage docker (sudo service docker start) 
+- modification de la commande de démarrage de docker a cause du bug https://github.com/docker/docker/issues/17653 (sudo vi  vi /usr/lib/systemd/system/docker.service) 
+  ExecStart=/usr/bin/docker daemon --exec-opt native.cgroupdriver=cgroupfs -H fd://
 - creation de comptes/groupes/sudos (en root)  
 sudo bash  
 for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; echo $userlogin | passwd --stdin $userlogin ; done  

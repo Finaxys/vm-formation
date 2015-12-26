@@ -10,6 +10,7 @@
 - demarrage docker (sudo service docker start) 
 - modification de la commande de démarrage de docker a cause du bug https://github.com/docker/docker/issues/17653 (sudo vi  vi /usr/lib/systemd/system/docker.service) 
   ExecStart=/usr/bin/docker daemon --exec-opt native.cgroupdriver=cgroupfs -H fd://
+- activation du service docker (sudo chkconfig docker on)
 - creation de comptes/groupes/sudos (en root)  
 sudo bash  
 for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; echo $userlogin | passwd --stdin $userlogin ; done  

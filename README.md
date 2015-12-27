@@ -7,13 +7,21 @@
 - installation docker-compose (curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose)  
 - installation git (sudo yum install git), java8 (sudo yum install java)  
 - installation puppet (rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm && yes | yum -y install puppet)  
-- demarrage docker (sudo service docker start)  
+- demarrage docker (sudo service docker start) 
+- modification de la commande de démarrage de docker a cause du bug https://github.com/docker/docker/issues/17653 (sudo vi /usr/lib/systemd/system/docker.service) 
+  ExecStart=/usr/bin/docker daemon --exec-opt native.cgroupdriver=cgroupfs -H fd://
+- activation du service docker (sudo chkconfig docker on)
 - creation de comptes/groupes/sudos (en root)  
 sudo bash  
 for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; echo $userlogin | passwd --stdin $userlogin ; done  
 visudo (ajouter ceci)  
   ALL ALL=(root) NOPASSWD: /bin/docker  
 exit  
+- creation des volumes pour les trainees
+for trainee in {1..5}; do for service in jenkins nexus sonar elk; do mkdir -p /volumes/${service}/traineegrp${trainee}-${service}/ ; done; done
+chown -R 1000:1000 /volumes/jenkins
+chown -R 200:200 /volumes/nexus
+
 - creation d'alias docker pour faciliter les choses  
 sudo vi /etc/profile.d/dockercmds.sh  
 contenu:  
@@ -21,7 +29,9 @@ alias dockerstopall='docker ps | grep -v CONTAINER | awk '"'"'{print $1}'"'"' | 
 alias dockerrmall='docker ps -a | grep -v CONTAINER | awk '"'"'{print $1}'"'"' | xargs docker rm'  
 alias dockerrmiall='docker images | grep -v "IMAGE ID" | awk '"'"'{print $3}'"'"' | xargs docker rmi'  
 - ajout des comptes dans le groupe docker (/etc/group)   docker:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5  
-  
+- creation du repertoire des volumes avec les bons droits
+mkdir -p /volumes ; chgrp docker /volumes ; chmod 777 /volumes
+
 ## mise en place du backlog (manager/ba)
 - crea de comptes github pour tout le monde  
 - crea d'une orga github avec les 3 amigos + staff  

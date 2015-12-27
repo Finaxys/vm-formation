@@ -58,4 +58,6 @@ docker login
 - Recup du package formation (git clone)+ creation des images ( docker-compose up)  
 - Modif de la description sur le jenkins : HELLO DOCKER-COMPOSE  
 - Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)  
+- creation d'un job freestyle : pas de client git?
+docker exec -ti <containerID> java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git
   

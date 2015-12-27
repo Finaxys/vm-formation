@@ -17,6 +17,9 @@ for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; ec
 visudo (ajouter ceci)  
   ALL ALL=(root) NOPASSWD: /bin/docker  
 exit  
+- creation des volumes pour les trainees
+for trainee in {1..5}; do for service in jenkins nexus sonar elk; do mkdir -p /volumes/${service}/traineegrp${trainee}-${service}/ ; done; done
+chown -R 1000:1000 /volumes/
 - creation d'alias docker pour faciliter les choses  
 sudo vi /etc/profile.d/dockercmds.sh  
 contenu:  

@@ -8,15 +8,16 @@ RUN apt-get update && apt-get install -y git \
 protobuf-compiler \
 puppet
 
-# PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkins! => hacked in postconfig/puppet_modules
+# PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkinsi_home! => hacked in postconfig/puppet_modules
 COPY ./postconfig /tmp/ 
 RUN puppet module install puppetlabs-stdlib -v 4.6.0 ;\
 puppet module install puppetlabs-apt -v 2.2.1 ;\
 puppet module install puppetlabs-java -v 1.4.3 ;\
-puppet module install darin-zypprepo -v 1.0.2 ;\
-puppet module install nanliu-staging -v 1.0.3 ;\
-puppet module install camptocamp-archive -v 0.8.0 ;\
-puppet apply /tmp/jenkinsconfig/manifests/init.pp --modulepath=/tmp/puppet_modules:/etc/puppet/modules
+
+#puppet module install darin-zypprepo -v 1.0.2 ;\
+#puppet module install nanliu-staging -v 1.0.3 ;\
+#puppet module install camptocamp-archive -v 0.8.0 ;\
+# A LANCER APRES DEMARRAGE : puppet apply /tmp/jenkinsconfig/manifests/init.pp --modulepath=/tmp/puppet_modules:/etc/puppet/modules 
 
 # GET BACK TO STANDARD USER
 USER jenkins

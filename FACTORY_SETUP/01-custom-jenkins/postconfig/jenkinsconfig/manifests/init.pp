@@ -37,10 +37,11 @@
 #
 node 'default' {
 
-  include jenkins
+ # include jenkins
 
-  jenkins::plugin { 'git':
-    version => '1.1.11',
-  }
+ # jenkins::plugin { 'git':
+ #   version => '1.1.11',
+ #   #ensure => 'present',
+ # }
   
 }

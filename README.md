@@ -55,14 +55,15 @@ docker login
 - Arrêt du conteneur (ctrl + c) puis redemarrage avec l'option start : docker ps -a && docker start <id du conteneur>  
 => le message est conservé cette fois  
 - sur le meme principe, creation d'un conteneur sonar :  docker run -d --name traineegrp{ID}-sonarqube -p 900{ID}:9000 -p 909{ID}:9092 sonarqube ? NON  
-- Recup du package formation (git clone)+ creation des images ( docker-compose up)  
+- Recup du package formation (git clone)+ creation des images (docker-compose up)  
 - Modif de la description sur le jenkins : HELLO DOCKER-COMPOSE  
 - Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)  
-- creation d'un job freestyle : pas de client git?
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git -restart
-- configuration du job build ATM server sur https://github.com/Finaxys/bluebank-atm-server.git
-- build echoue : pas de maven ? installer
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-tool
-This command can be only invoked from a build executing inside Hudson
-- configurer le maven en installation auto puis le choisir dans le job (maven 3.1.1) 
+- creation d'un job freestyle : pas de client git?  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git -restart  
+- configuration du job build ATM server sur https://github.com/Finaxys/bluebank-atm-server.git  
+- build echoue : pas de maven ? installer  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-tool  
+This command can be only invoked from a build executing inside Hudson  
+- configurer un maven basé sur le home suivant : /var/jenkins_home/maven3 (installe via puppet)  
+- configurer un java basé sur le home suivant : /usr/lib/jvm/java-8-openjdk-amd64 (installé via puppet)  
   

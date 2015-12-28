@@ -70,7 +70,9 @@ This command can be only invoked from a build executing inside Hudson
 - sur sonarcube, installer les plugins suivants: checkstyle, PMD, findbugs, github et pitest  
 - installer le plugin sonar  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin sonar -restart  
--  configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent
--  modifier le job de DEV avec le runner sonar et lancer
--  apres analyse, ajouter les widgets events, complexity, duplications et pitest reports
-
+-  configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent  
+-  modifier le job de DEV avec le runner sonar et lancer  
+-  apres analyse, ajouter les widgets integration tests et pitest reports  
+-  rien sur pitest? ajouter dans jenkins l'option sur la configuration sonarqube (analysis properties) et relancer l'analyse  
+sonar.pitest.mode=reuseReport  
+  

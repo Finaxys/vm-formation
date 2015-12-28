@@ -67,4 +67,5 @@ This command can be only invoked from a build executing inside Hudson
 - configurer un maven basé sur le home suivant : /var/jenkins_home/maven3 (installe via puppet)  
 - configurer un java basé sur le home suivant : /usr/lib/jvm/java-8-openjdk-amd64 (installé via puppet)
 - configurer le build maven comme ceci : clean install -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage
+- sur sonarcube, installer les plugins suivants: checkstyle, PMD, findbugs, github et pitest  
   

@@ -68,8 +68,11 @@ This command can be only invoked from a build executing inside Hudson
 - configurer un java basé sur le home suivant : /usr/lib/jvm/java-8-openjdk-amd64 (installé via puppet)
 - configurer le build maven comme ceci : clean install -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage
 - sur sonarcube, installer les plugins suivants: checkstyle, PMD, findbugs, github et pitest  
-- installer le plugin sonar  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin sonar -restart  
+- installer les plugins sonar, pitmutation, jacoco, et jgiven  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin sonar  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin jgiven  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin jacoco  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pitmutation -restart  
 -  configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent  
 -  modifier le job de DEV avec le runner sonar et lancer  
 -  apres analyse, ajouter les widgets integration tests et pitest reports  

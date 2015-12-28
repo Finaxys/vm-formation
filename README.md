@@ -74,8 +74,8 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin jacoco  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pitmutation -restart  
 -  configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent  
--  modifier le job de DEV avec le runner sonar et lancer  
--  apres analyse, ajouter les widgets integration tests et pitest reports  
+-  modifier le job de DEV avec le runner sonar + publication des rapports junit, jacoco, jgiven (html) et pit mutation et relancer  
+-  apres analyse, ajouter les widgets integration tests et pitest reports dans sonarqube et comparer les resultats
 -  rien sur pitest? ajouter dans jenkins l'option sur la configuration sonarqube (analysis properties) et relancer l'analyse  
 sonar.pitest.mode=reuseReport  
   

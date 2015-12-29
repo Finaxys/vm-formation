@@ -60,7 +60,7 @@ docker login
 - Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)  
 - creation d'un job freestyle : pas de client git?  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git -restart  
-- configuration du job build ATM server sur https://github.com/Finaxys/bluebank-atm-server.git  
+- configuration du job build ATM server sur https://github.com/Finaxys/bluebank-atm-server.git (nom: bluebank-atm-server, polling : toutes les deux minutes)
 - build echoue : pas de maven ? installer  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-tool  
 This command can be only invoked from a build executing inside Hudson  
@@ -79,4 +79,9 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 - installer le plugin envinject sur jenkins  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin envinject -restart  
 - definir un environnement pour le build avec le properties content suivant : PIPELINE_VERSION=${BUILD_NUMBER}
-  
+- modifier la version du pom.xml en ATMSERVER-${env.PIPELINE_VERSION} et pusher ... le job doit marcher  
+- Ajouter en post-task un publish git avec le tag en ATMSERVER-${PIPELINE_VERSION} create vers le repo bluebank-atm-server
+- Echec : ajouter en additional behaviour le custom user/email pour autoriser le push du tag  
+- TODO push dans nexus
+- installer le plugin parameterized plugin  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin  parameterized-trigger -restart	

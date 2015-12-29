@@ -76,5 +76,7 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 - modifier le job de DEV avec le runner sonar + publication des rapports junit (target/surefire-reports/*.xml), jgiven (html sur target/jgiven-reports/json/*.json) et pit mutation (conf par defaut) et relancer  
 - la page jgiven ne s'ouvre pas ? telecharger le zip, l'extraire et regarder  
 - apres analyse, ajouter les widgets integration tests et pitest reports dans sonarqube et comparer les resultats => rien sur pitest?  
--    
+- installer le plugin envinject sur jenkins  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin envinject -restart  
+- definir un environnement pour le build avec le properties content suivant : PIPELINE_VERSION=${BUILD_NUMBER}
   

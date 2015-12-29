@@ -72,9 +72,8 @@ This command can be only invoked from a build executing inside Hudson
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin sonar  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin htmlpublisher  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pitmutation -restart  
--  configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent  
+-  configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent avec l'option sonar.pitest.mode=reuseReport  
 -  modifier le job de DEV avec le runner sonar + publication des rapports junit (target/surefire-reports/*.xml), jgiven (html sur target/jgiven-reports/json/*.json) et pit mutation (conf par defaut) et relancer  
--  apres analyse, ajouter les widgets integration tests et pitest reports dans sonarqube et comparer les resultats
--  rien sur pitest? ajouter dans jenkins l'option sur la configuration sonarqube (analysis properties) et relancer l'analyse  
-sonar.pitest.mode=reuseReport  
-  
+-  la page jgiven ne s'ouvre pas ? telecharger le zip, l'extraire et regarder  
+-  apres analyse, ajouter les widgets integration tests et pitest reports dans sonarqube et comparer les resultats => rien sur pitest?
+-  

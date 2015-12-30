@@ -60,7 +60,7 @@ docker login
 - Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)  
 - creation d'un job freestyle : pas de client git?  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git -restart  
-- configuration du job 02-ATM-PACKAGE sur https://github.com/Finaxys/bluebank-atm-server.git et https://github.com/Finaxys/bluebank-atm-client.git (nom: bluebank-atm-server/client)  
+- configuration du job 01-ATM-BUILD sur https://github.com/Finaxys/bluebank-atm-server.git et https://github.com/Finaxys/bluebank-atm-client.git (nom: bluebank-atm-server/client)  
 - positionner le polling : toutes les deux minutes
 - build echoue : pas de maven ? installer  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-tool  
@@ -93,7 +93,11 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin docker-build-publish -restart  
 - configurer le runner docker (docker-in-jenkins) dans jenkins en install auto
 - creer un job 02-ATM-PACKAGE de type freestyle (garder l'URL  + creds git du serveur, ajouter le step docker push et push avec le repo name ATM-CDTRAINING, le tag ATM-${PIPELINE_VERSION} et en advanced le Dockerfile 02-PACKAGE-ATM/Dockerfile)
-    
+- mettre a jour le job 01-ATM-BUILD pour inclure 02-ATM-PACKAGE en parameterized downstream, avec le git passthrough + les params predefinis comme suit : PIPELINE_VERSION=${PIPELINE_VERSION}  
+- installer le build pipeline plugin  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin build-pipeline-plugin -restart  
+- creer une vue pipeline ATM-PIPELINE et ajouter le job 01-ATM-BUILD  
+
 ## mise en place du pipeline (dev/ops)  
   
 ## deploiement vers la prod (tutum)

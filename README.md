@@ -87,12 +87,12 @@ clean deploy -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage 
 - installer le plugin parameterized plugin  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin  parameterized-trigger -restart	
 
-# mise en place de l'infrastructure de run virtualisée (dev/ops)  
+## mise en place de l'infrastructure de run virtualisée (dev/ops)  
   
-# mise en place du pipeline (dev/ops)  
+## mise en place du pipeline (dev/ops)  
   
-# deploiement vers la prod (tutum)
+## deploiement vers la prod (tutum)
 
-# mise en place de la metrologie (elastic)  
+## mise en place de la metrologie (elastic)  
 
-# creation d'une feature pour pousser le pipeline de bout en bout  
+## creation d'une feature pour pousser le pipeline de bout en bout  

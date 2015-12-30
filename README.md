@@ -42,7 +42,7 @@ mkdir -p /volumes ; chgrp docker /volumes ; chmod 777 /volumes
 ## mise en place du workspace de developpement (dev)  
 - recuperation du projet server : https://github.com/Finaxys/bluebank-atm-server.git en repo public  
 - analyse du projet  
-- build maven : creer des configurations de build pour : compilation et tests u, execution et generation des rapports BDD, execution des rapports de mutation testing  
+- build maven : creer des configurations de build pour : compilation et tests u, execution et generation des rapports BDD, execution des rapports de mutation testing, demarrage du serveur et de la GUI (install de protoc + path, definition de PIPELINE_VERSION en SNAPSHOT, install de node + path...)  
   
 ## mise en place de l'IC (dev/ops)  
 - Creation d'un compte docker.io (prendre le github)  
@@ -55,7 +55,54 @@ docker login
 - Arrêt du conteneur (ctrl + c) puis redemarrage avec l'option start : docker ps -a && docker start <id du conteneur>  
 => le message est conservé cette fois  
 - sur le meme principe, creation d'un conteneur sonar :  docker run -d --name traineegrp{ID}-sonarqube -p 900{ID}:9000 -p 909{ID}:9092 sonarqube ? NON  
-- Recup du package formation (git clone)+ creation des images ( docker-compose up)  
+- Recup du package formation (git clone)+ creation des images (docker-compose up)  
 - Modif de la description sur le jenkins : HELLO DOCKER-COMPOSE  
 - Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)  
+- creation d'un job freestyle : pas de client git?  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git -restart  
+- configuration du job 01-ATM-BUILD sur https://github.com/Finaxys/bluebank-atm-server.git et https://github.com/Finaxys/bluebank-atm-client.git (nom: bluebank-atm-server/client)  
+- positionner le polling : toutes les deux minutes
+- build echoue : pas de maven ? installer  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-tool  
+This command can be only invoked from a build executing inside Hudson  
+- configurer un maven basé sur le home suivant : /var/jenkins_home/maven3 (installe via puppet)  
+- configurer un java basé sur le home suivant : /usr/lib/jvm/java-8-openjdk-amd64 (installé via puppet)
+- configurer le build maven comme ceci : clean install -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage
+- sur sonarcube, installer les plugins suivants: checkstyle, PMD, findbugs, github et pitest  
+- sur jenkins, installer les plugins sonar, pitmutation et htmlpublisher  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin sonar  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin htmlpublisher  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pitmutation -restart  
+- configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent avec l'option sonar.pitest.mode=reuseReport  
+- modifier le job de DEV avec le runner sonar + publication des rapports junit (target/surefire-reports/*.xml), jgiven (html sur target/jgiven-reports/json/*.json) et pit mutation (conf par defaut) et relancer  
+- la page jgiven ne s'ouvre pas ? telecharger le zip, l'extraire et regarder  
+- apres analyse, ajouter les widgets integration tests et pitest reports dans sonarqube et comparer les resultats => rien sur pitest?  
+- installer le plugin envinject sur jenkins  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin envinject -restart  
+- Remplacer le goal maven pour inclure le deploiement des binaires  
+clean deploy -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage  -DaltDeploymentRepository=releases::default::http://admin:admin123@traineegrp-nexus:8081/content/repositories/releases  
+- definir un environnement pour le build avec le properties content suivant : PIPELINE_VERSION=${BUILD_NUMBER}
+- modifier la version du pom.xml en ATMSERVER-${env.PIPELINE_VERSION} et pusher ... le job doit marcher  
+- Ajouter en post-task un publish git avec le tag en ATMSERVER-${PIPELINE_VERSION} create vers le repo bluebank-atm-server
+- Echec : ajouter en additional behaviour le custom user/email pour autoriser le push des tags  
+- installer le plugin parameterized plugin  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin  parameterized-trigger -restart	
+
+## mise en place de l'infrastructure de run virtualisée (dev/ops)  
+- installer le plugin docker sur jenkins pour mettre en place le packaging des images  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin docker-build-publish -restart  
+- configurer le runner docker (docker-in-jenkins) dans jenkins en install auto
+- creer un job 02-ATM-PACKAGE de type freestyle (garder l'URL  + creds git du serveur, ajouter le step docker push et push avec le repo name ATM-CDTRAINING, le tag ATM-${PIPELINE_VERSION} et en advanced le Dockerfile 02-PACKAGE-ATM/Dockerfile)
+- mettre a jour le job 01-ATM-BUILD pour inclure 02-ATM-PACKAGE en parameterized downstream, avec le git passthrough + les params predefinis comme suit : PIPELINE_VERSION=${PIPELINE_VERSION}  
+- installer le build pipeline plugin et le rebuild  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin build-pipeline-plugin -restart  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin rebuild -restart  
+- creer une vue pipeline ATM-PIPELINE et ajouter le job 01-ATM-BUILD  
+
+## mise en place du pipeline (dev/ops)  
   
+## deploiement vers la prod (tutum)
+
+## mise en place de la metrologie (elastic)  
+
+## creation d'une feature pour pousser le pipeline de bout en bout  

@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y git \
 protobuf-compiler \
 puppet
 
+# DOCKER INSTALL - YEAH, DOCKER IN DOCKER ;)
+RUN wget -qO- https://get.docker.com/ | sh
+
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkinsi_home! => hacked in postconfig/puppet_modules
 COPY ./postconfig /tmp/ 
 RUN puppet module install puppetlabs-stdlib -v 4.6.0 ;\

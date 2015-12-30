@@ -13,11 +13,12 @@ COPY ./postconfig /tmp/
 RUN puppet module install puppetlabs-stdlib -v 4.6.0 ;\
 puppet module install puppetlabs-apt -v 2.2.1 ;\
 puppet module install puppetlabs-java -v 1.4.3 ;\
+puppet module install darin-zypprepo -v 1.0.2 ;\
+puppet module install nanliu-staging -v 1.0.3 ;\
+puppet module install camptocamp-archive -v 0.8.0
 
-#puppet module install darin-zypprepo -v 1.0.2 ;\
-#puppet module install nanliu-staging -v 1.0.3 ;\
-#puppet module install camptocamp-archive -v 0.8.0 ;\
-# A LANCER APRES DEMARRAGE : puppet apply /tmp/jenkinsconfig/manifests/init.pp --modulepath=/tmp/puppet_modules:/etc/puppet/modules 
+# puppet post-configuration : install java8
+RUN puppet apply /tmp/jenkinsconfig/manifests/init.pp --modulepath=/tmp/puppet_modules:/etc/puppet/modules 
 
 # GET BACK TO STANDARD USER
 USER jenkins

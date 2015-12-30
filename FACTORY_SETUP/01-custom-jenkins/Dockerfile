@@ -9,7 +9,9 @@ protobuf-compiler \
 puppet
 
 # DOCKER INSTALL - YEAH, DOCKER IN DOCKER ;)
-RUN wget -qO- https://get.docker.com/ | sh
+# RUN wget -qO- https://get.docker.com/ | sh
+RUN apt-get install docker-engine && service docker start && usermod -aG docker jenkins 
+
 
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkinsi_home! => hacked in postconfig/puppet_modules
 COPY ./postconfig /tmp/ 

@@ -94,8 +94,9 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 - configurer le runner docker (docker-in-jenkins) dans jenkins en install auto
 - creer un job 02-ATM-PACKAGE de type freestyle (garder l'URL  + creds git du serveur, ajouter le step docker push et push avec le repo name ATM-CDTRAINING, le tag ATM-${PIPELINE_VERSION} et en advanced le Dockerfile 02-PACKAGE-ATM/Dockerfile)
 - mettre a jour le job 01-ATM-BUILD pour inclure 02-ATM-PACKAGE en parameterized downstream, avec le git passthrough + les params predefinis comme suit : PIPELINE_VERSION=${PIPELINE_VERSION}  
-- installer le build pipeline plugin  
+- installer le build pipeline plugin et le rebuild  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin build-pipeline-plugin -restart  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin rebuild -restart  
 - creer une vue pipeline ATM-PIPELINE et ajouter le job 01-ATM-BUILD  
 
 ## mise en place du pipeline (dev/ops)  

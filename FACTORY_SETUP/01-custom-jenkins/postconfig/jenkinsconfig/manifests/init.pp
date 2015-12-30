@@ -43,5 +43,7 @@ node 'default' {
  #   version => '1.1.11',
  #   #ensure => 'present',
  # }
+
+ include java
   
 }

@@ -42,7 +42,7 @@ mkdir -p /volumes ; chgrp docker /volumes ; chmod 777 /volumes
 ## mise en place du workspace de developpement (dev)  
 - recuperation du projet server : https://github.com/Finaxys/bluebank-atm-server.git en repo public  
 - analyse du projet  
-- build maven : creer des configurations de build pour : compilation et tests u, execution et generation des rapports BDD, execution des rapports de mutation testing  
+- build maven : creer des configurations de build pour : compilation et tests u, execution et generation des rapports BDD, execution des rapports de mutation testing, demarrage du serveur et de la GUI (install de protoc + path, definition de PIPELINE_VERSION en SNAPSHOT, install de node + path...)  
   
 ## mise en place de l'IC (dev/ops)  
 - Creation d'un compte docker.io (prendre le github)  
@@ -60,7 +60,8 @@ docker login
 - Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)  
 - creation d'un job freestyle : pas de client git?  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git -restart  
-- configuration du job build ATM server sur https://github.com/Finaxys/bluebank-atm-server.git (nom: bluebank-atm-server, polling : toutes les deux minutes)
+- configuration du job 02-ATM-PACKAGE sur https://github.com/Finaxys/bluebank-atm-server.git et https://github.com/Finaxys/bluebank-atm-client.git (nom: bluebank-atm-server/client)  
+- positionner le polling : toutes les deux minutes
 - build echoue : pas de maven ? installer  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-tool  
 This command can be only invoked from a build executing inside Hudson  
@@ -83,12 +84,16 @@ clean deploy -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage 
 - definir un environnement pour le build avec le properties content suivant : PIPELINE_VERSION=${BUILD_NUMBER}
 - modifier la version du pom.xml en ATMSERVER-${env.PIPELINE_VERSION} et pusher ... le job doit marcher  
 - Ajouter en post-task un publish git avec le tag en ATMSERVER-${PIPELINE_VERSION} create vers le repo bluebank-atm-server
-- Echec : ajouter en additional behaviour le custom user/email pour autoriser le push du tag  
+- Echec : ajouter en additional behaviour le custom user/email pour autoriser le push des tags  
 - installer le plugin parameterized plugin  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin  parameterized-trigger -restart	
 
 ## mise en place de l'infrastructure de run virtualisée (dev/ops)  
-  
+- installer le plugin docker sur jenkins pour mettre en place le packaging des images  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin docker-build-publish -restart  
+- configurer le runner docker (docker-in-jenkins) dans jenkins en install auto
+- creer un job 02-ATM-PACKAGE de type freestyle (garder l'URL  + creds git du serveur, ajouter le step docker push et push avec le repo name ATM-CDTRAINING, le tag ATM-${PIPELINE_VERSION} et en advanced le Dockerfile 02-PACKAGE-ATM/Dockerfile)
+    
 ## mise en place du pipeline (dev/ops)  
   
 ## deploiement vers la prod (tutum)

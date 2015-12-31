@@ -2,20 +2,19 @@ FROM jenkins:1.625.3
 
 # NEED TO BE ROOT FOR APT INSTALLS
 USER root
+ 
+# MODULES INSTALL : GIT, PROTOBUF, PUPPET
+RUN apt-get install -y git \
+protobuf-compiler \
+puppet \ 
+apt-transport-https
 
 # DOCKER REPOS SETUP - YEAH, DOCKER IN DOCKER ;)
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 RUN echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sources.list.d/docker.list && apt-get update && apt-cache policy docker-engine
- 
-# MODULES INSTALL : GIT, PROTOBUF, PUPPET, DOCKER - YEAH, DOCKER IN DOCKER ;) 
-apt-get install -y git \
-protobuf-compiler \
-puppet \ 
-apt-transport-https \
-docker-engine
 
-# ACTIVATE DOCKER 
-RUN echo "service docker start" >> /usr/local/bin/jenkins.sh && usermod -aG docker jenkins 
+# INSTALL AND ACTIVATE DOCKER 
+RUN apt-get install -y docker-engine && echo "service docker start" >> /usr/local/bin/jenkins.sh && usermod -aG docker jenkins 
 
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkinsi_home! => hacked in postconfig/puppet_modules
 COPY ./postconfig /tmp/

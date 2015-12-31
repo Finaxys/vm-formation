@@ -13,7 +13,7 @@
 - activation du service docker (sudo chkconfig docker on)
 - creation de comptes/groupes/sudos (en root)  
 sudo bash  
-for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; echo $userlogin | passwd --stdin $userlogin ; done  
+for trainee in {1..5}; do userlogin=traineegrp$trainee ; useradd $userlogin ; echo $userlogin | passwd --stdin $userlogin ; echo "export TRAINEEGRPID=$trainee" >> /home/${userlogin}/.bashrc;  done
 visudo (ajouter ceci)  
   ALL ALL=(root) NOPASSWD: /bin/docker  
 exit  

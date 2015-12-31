@@ -4,7 +4,7 @@ FROM jenkins:1.625.3
 USER root
  
 # MODULES INSTALL : GIT, PROTOBUF, PUPPET
-RUN apt-get install -y git \
+RUN apt-get update && apt-get install -y git \
 protobuf-compiler \
 puppet \ 
 apt-transport-https

@@ -18,12 +18,16 @@ docker-engine
 RUN service docker start && systemctl enable docker && usermod -aG docker jenkins 
 
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkinsi_home! => hacked in postconfig/puppet_modules
-COPY ./postconfig /tmp/ 
+COPY ./postconfig /tmp/
 RUN puppet module install puppetlabs-stdlib -v 4.6.0 ;\
 puppet module install puppetlabs-apt -v 2.2.1 ;\
-puppet module install puppetlabs-java -v 1.4.3
+puppet module install puppetlabs-java -v 1.4.3 ;\
+puppet module install darin-zypprepo -v 1.0.2 ;\
+puppet module install nanliu-staging -v 1.0.3 ;\
+puppet module install camptocamp-archive -v 0.8.0
 
-# A LANCER APRES DEMARRAGE : puppet apply /tmp/jenkinsconfig/manifests/init.pp --modulepath=/tmp/puppet_modules:/etc/puppet/modules 
+# puppet post-configuration : install java8
+RUN puppet apply /tmp/jenkinsconfig/manifests/init.pp --modulepath=/tmp/puppet_modules:/etc/puppet/modules
 
 # GET BACK TO STANDARD USER
 USER jenkins
@@ -35,4 +39,3 @@ ENV M2_HOME /var/jenkins_home/maven3
 RUN echo "export M2_HOME=$M2_HOME" >> /var/jenkins_home/.bashrc
 ENV PATH $M2_HOME/bin:/usr/local/bin:$PATH
 RUN echo "export PATH=$PATH" >> /var/jenkins_home/.bashrc
-

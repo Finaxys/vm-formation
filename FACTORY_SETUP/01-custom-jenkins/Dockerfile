@@ -21,8 +21,6 @@ RUN apt-get install -y docker-engine && \
 usermod -aG docker jenkins && \
 chmod +x /usr/local/bin/custom_endpoint.sh && \
 adduser jenkins sudo && \
-
-factorysetup_jenkins
 echo "jenkins ALL=(root) NOPASSWD: service"  | (EDITOR="tee -a" visudo)
 ENTRYPOINT [ "/usr/local/bin/custom_endpoint.sh" ]
 

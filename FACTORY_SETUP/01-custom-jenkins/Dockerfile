@@ -22,7 +22,8 @@ usermod -aG docker jenkins && \
 chmod +x /usr/local/bin/custom_endpoint.sh && \
 adduser jenkins sudo && \
 
-echo "jenkins ALL=(root) NOPASSWD: service"  >> /etc/sudoers
+factorysetup_jenkins
+echo "jenkins ALL=(root) NOPASSWD: service"  | (EDITOR="tee -a" visudo)
 ENTRYPOINT [ "/usr/local/bin/custom_endpoint.sh" ]
 
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkinsi_home! => hacked in postconfig/puppet_modules

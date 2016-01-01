@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y git \
 protobuf-compiler \
 puppet \ 
 apt-transport-https \
+sudo \
 cgroup-bin
 
 # DOCKER REPOS SETUP - YEAH, DOCKER IN DOCKER ;)

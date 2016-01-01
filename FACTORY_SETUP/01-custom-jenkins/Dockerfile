@@ -17,7 +17,12 @@ apt-get update && apt-cache policy docker-engine
 
 # INSTALL AND ACTIVATE DOCKER 
 COPY ./custom_endpoint.sh /usr/local/bin/
-RUN apt-get install -y docker-engine && usermod -aG docker jenkins && chmod +x /usr/local/bin/custom_endpoint.sh && adduser jenkins sudo && echo "jenkins ALL = (ALL) NOPASSWD: service" >> /etc/sudoers
+RUN apt-get install -y docker-engine && \
+usermod -aG docker jenkins && \
+chmod +x /usr/local/bin/custom_endpoint.sh && \
+adduser jenkins sudo && \
+
+echo "jenkins ALL=(root) NOPASSWD: service"  >> /etc/sudoers
 ENTRYPOINT [ "/usr/local/bin/custom_endpoint.sh" ]
 
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkinsi_home! => hacked in postconfig/puppet_modules

@@ -8,8 +8,7 @@ RUN apt-get update && apt-get install -y git \
 protobuf-compiler \
 puppet \ 
 apt-transport-https \
-sudo \
-cgroup-bin
+sudo
 
 # DOCKER REPOS SETUP - YEAH, DOCKER IN DOCKER ;)
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \

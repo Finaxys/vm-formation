@@ -6,6 +6,7 @@ jenkins:
   volumes:
    - /volumes/jenkins/traineegrp${TRAINEEGRPID}-jenkins:/var/jenkins_home
   container_name: traineegrp${TRAINEEGRPID}-jenkins
+  privileged: true
   links:
   - sonar
   - nexus

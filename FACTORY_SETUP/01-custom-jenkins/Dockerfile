@@ -4,7 +4,7 @@ FROM jenkins:1.625.3
 USER root
  
 # MODULES INSTALL : GIT, PROTOBUF, PUPPET, SUDO
-RUN apt-get update && apt-get install -y git protobuf-compiler puppet apt-transport-https # sudo
+RUN apt-get update && apt-get install -y git protobuf-compiler puppet apt-transport-https sudo
 
 # DOCKER REPOS SETUP - YEAH, DOCKER IN DOCKER ;)
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
@@ -12,13 +12,13 @@ echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sour
 apt-get update && apt-cache policy docker-engine
 
 # INSTALL AND ACTIVATE DOCKER 
-#COPY ./custom_endpoint.sh /usr/local/bin/
-RUN apt-get install -y docker-engine #&& \
-#chmod +x /usr/local/bin/custom_endpoint.sh && \
-#adduser jenkins sudo && \
-#echo "jenkins ALL=NOPASSWD:/usr/sbin/service" | (EDITOR="tee -a" visudo) && \
-RUN groupadd docker && usermod -aG docker jenkins
-#ENTRYPOINT [ "/usr/local/bin/custom_endpoint.sh" ]
+COPY ./custom_endpoint.sh /usr/local/bin/
+RUN apt-get install -y docker-engine && \
+chmod +x /usr/local/bin/custom_endpoint.sh && \
+adduser jenkins sudo && \
+echo "jenkins ALL=NOPASSWD:/usr/sbin/service" | (EDITOR="tee -a" visudo) && \
+groupadd docker && usermod -aG docker jenkins
+ENTRYPOINT [ "/usr/local/bin/custom_endpoint.sh" ]
 
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkins_home! => hacked in postconfig/puppet_modules
 COPY ./postconfig /tmp/

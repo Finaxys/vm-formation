@@ -5,6 +5,8 @@ jenkins:
    - "500${TRAINEEGRPID}:5000"
   volumes:
    - /volumes/jenkins/traineegrp${TRAINEEGRPID}-jenkins:/var/jenkins_home
+   - /usr/bin/docker:/bin/docker
+   - /var/run/docker.sock:/var/run/docker.sock
   container_name: traineegrp${TRAINEEGRPID}-jenkins
   privileged: true
   links:

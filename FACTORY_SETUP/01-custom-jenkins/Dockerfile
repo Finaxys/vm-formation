@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y git protobuf-compiler puppet apt-transp
 #chmod +x /usr/local/bin/custom_endpoint.sh && \
 #adduser jenkins sudo && \
 #echo "jenkins ALL=NOPASSWD:/usr/sbin/service" | (EDITOR="tee -a" visudo) && \
-RUN usermod -aG docker jenkins
+RUN groupadd docker && usermod -aG docker jenkins
 #ENTRYPOINT [ "/usr/local/bin/custom_endpoint.sh" ]
 
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkins_home! => hacked in postconfig/puppet_modules

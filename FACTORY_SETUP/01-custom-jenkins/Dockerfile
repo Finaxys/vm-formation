@@ -13,7 +13,7 @@ apt-get update && apt-cache policy docker-engine
 
 # INSTALL AND ACTIVATE DOCKER 
 #COPY ./custom_endpoint.sh /usr/local/bin/
-RUN apt-get install -y docker-engine && \
+RUN apt-get install -y docker-engine #&& \
 #chmod +x /usr/local/bin/custom_endpoint.sh && \
 #adduser jenkins sudo && \
 #echo "jenkins ALL=NOPASSWD:/usr/sbin/service" | (EDITOR="tee -a" visudo) && \

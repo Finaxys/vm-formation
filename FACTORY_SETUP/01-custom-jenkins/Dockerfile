@@ -15,7 +15,6 @@ RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 581
 RUN apt-get install -y docker-engine && \
     adduser jenkins sudo && \
     echo "jenkins ALL=NOPASSWD:ALL" | (EDITOR="tee -a" visudo) && \ 
-    echo "alias docker='sudo docker'" >> /var/jenkins_home/.bashrc && \
     usermod -aG docker jenkins
 
 # PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkins_home! => hacked in postconfig/puppet_modules
@@ -31,6 +30,7 @@ RUN puppet apply /tmp/jenkinsconfig/manifests/init.pp --modulepath=/tmp/puppet_m
 USER jenkins
 
 # MAVEN INSTALL "A LA MANO"
+RUN echo "alias docker='sudo docker'" >> /var/jenkins_home/.bashrc
 ENV PATH $M2_HOME/bin:/usr/local/bin:$PATH
 ENV M2_HOME /var/jenkins_home/maven3
 RUN mkdir -p //var/jenkins_home/maven3 && \

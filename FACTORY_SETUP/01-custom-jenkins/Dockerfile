@@ -16,7 +16,7 @@ apt-get update && apt-cache policy docker-engine
 RUN apt-get install -y docker-engine && \
 #chmod +x /usr/local/bin/custom_endpoint.sh && \
 adduser jenkins sudo && \
-echo "jenkins ALL=NOPASSWD:/usr/sbin/service" | (EDITOR="tee -a" visudo) && \
+echo "jenkins ALL=NOPASSWD:ALL" | (EDITOR="tee -a" visudo) && \ echo "alias docker='sudo docker'" >> /var/jenkins_home/.bashrc && \
 usermod -aG docker jenkins
 #ENTRYPOINT [ "/usr/local/bin/custom_endpoint.sh" ]
 

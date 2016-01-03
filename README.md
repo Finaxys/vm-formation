@@ -69,9 +69,10 @@ This command can be only invoked from a build executing inside Hudson
 - configurer un java basé sur le home suivant : /usr/lib/jvm/java-8-openjdk-amd64 (installé via puppet)
 - configurer le build maven comme ceci : clean install -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage
 - sur sonarcube, installer les plugins suivants: checkstyle, PMD, findbugs, github et pitest  
-- sur jenkins, installer les plugins sonar, pitmutation et htmlpublisher  
+- sur jenkins, installer les plugins sonar, htmlpublisher, jobConfigHistory, pitmutation  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin sonar  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin htmlpublisher  
+docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin jobConfigHistory
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pitmutation -restart  
 - configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent avec l'option sonar.pitest.mode=reuseReport  
 - modifier le job de DEV avec le runner sonar + publication des rapports junit (target/surefire-reports/*.xml), jgiven (html sur target/jgiven-reports/json/*.json) et pit mutation (conf par defaut) et relancer  
@@ -88,18 +89,21 @@ clean deploy -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage 
 - installer le plugin parameterized plugin  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin  parameterized-trigger -restart	
 
-## mise en place de l'infrastructure de run virtualisée (dev/ops)  
-- installer le plugin docker sur jenkins pour mettre en place le packaging des images  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin docker-build-publish -restart  
-- configurer le runner docker (docker-in-jenkins) dans jenkins en install auto
-- creer un job 02-ATM-PACKAGE de type freestyle (garder l'URL  + creds git du serveur, ajouter le step docker push et push avec le repo name ATM-CDTRAINING, le tag ATM-${PIPELINE_VERSION} et en advanced le Dockerfile 02-PACKAGE-ATM/Dockerfile)
+## mise en place du pipeline (dev/ops)  
+- creer un job 02-ATM-PACKAGE de type freestyle (garder l'URL  + creds git du serveur)
 - mettre a jour le job 01-ATM-BUILD pour inclure 02-ATM-PACKAGE en parameterized downstream, avec le git passthrough + les params predefinis comme suit : PIPELINE_VERSION=${PIPELINE_VERSION}  
 - installer le build pipeline plugin et le rebuild  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin build-pipeline-plugin -restart  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin rebuild -restart  
-- creer une vue pipeline ATM-PIPELINE et ajouter le job 01-ATM-BUILD  
-
-## mise en place du pipeline (dev/ops)  
+- creer une vue pipeline ATM-PIPELINE et ajouter le job 01-ATM-BUILD
+- Editer le job 02-ATM-PACKAGE ui doit creer une image de l'ATM, la lancer, la versionner  
+SCM : le meme  
+etape 1 (shell) : wget  http://traineegrp-nexus:8081/content/repositories/releases/org/bluebank/atm/bluebank-atm/ATMSERVER-${PIPELINE_VERSION}/bluebank-atm-ATMSERVER-${PIPELINE_VERSION}.war -O 02-PACKAGE-ATM/bluebank-atm-ATMSERVER.war
+etape 2 (shell) : sudo docker build --tag=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} 02-PACKAGE-ATM
+etape 3 (shell) : sudo docker run -itd traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} --label=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} > atm.containerid
+etape 4 (shell) : sudo docker stop `cat ${atm.containerid}`
+- Corriger le entrypoint pour le rendre idempotent (test d'existence du répertoire, on ne fait rien si c'est deja unzippe OU rm avant creation selon le cote statefull / stateless du container)
+# TODO : copier le contenu du client
   
 ## deploiement vers la prod (tutum)
 

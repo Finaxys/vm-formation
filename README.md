@@ -98,7 +98,7 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 - creer une vue pipeline ATM-PIPELINE et ajouter le job 01-ATM-BUILD
 - Editer le job 02-ATM-PACKAGE ui doit creer une image de l'ATM, la lancer, la versionner  
 SCM : le meme  
-etape 1 (shell) : wget  http://traineegrp-nexus:8081/content/repositories/releases/org/bluebank/atm/bluebank-atm/ATMSERVER-${PIPELINE_VERSION}/bluebank-atm-ATMSERVER-${PIPELINE_VERSION}.war -O 02-PACKAGE-ATM/bluebank-atm-ATMSERVER.war
+etape 1 (shell) : wget --no-verbose http://traineegrp-nexus:8081/content/repositories/releases/org/bluebank/atm/bluebank-atm/ATMSERVER-${PIPELINE_VERSION}/bluebank-atm-ATMSERVER-${PIPELINE_VERSION}.war -O 02-PACKAGE-ATM/bluebank-atm-ATMSERVER.war
 etape 2 (shell) : sudo docker build --tag=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} 02-PACKAGE-ATM
 etape 3 (shell) : sudo docker run -itd traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} --label=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} > atm.containerid
 etape 4 (shell) : sudo docker stop `cat ${atm.containerid}`

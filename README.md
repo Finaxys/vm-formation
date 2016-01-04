@@ -101,11 +101,10 @@ SCM : le meme
 etape 1 (shell) : wget --no-verbose http://traineegrp-nexus:8081/content/repositories/releases/org/bluebank/atm/bluebank-atm/ATMSERVER-${PIPELINE_VERSION}/bluebank-atm-ATMSERVER-${PIPELINE_VERSION}.war -O 02-PACKAGE-ATM/bluebank-atm-ATMSERVER.war
 etape 2 (shell) : sudo docker build --tag=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} 02-PACKAGE-ATM
 etape 3 (shell) : sudo docker run -itd traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} --label=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} > atm.containerid
-etape 4 (shell) : sudo docker stop `cat ${atm.containerid}`
-- Corriger le entrypoint pour le rendre idempotent (test d'existence du répertoire, on ne fait rien si c'est deja unzippe OU rm avant creation selon le cote statefull / stateless du container)
+etape 4 (shell) : sudo docker stop `cat atm.containerid` ; sudo docker rm `cat atm.containerid`
 # TODO : copier le contenu du client
-  
-## deploiement vers la prod (tutum)
+
+## import en registry + deploiement vers la prod (tutum)
 
 ## mise en place de la metrologie (elastic)  
 

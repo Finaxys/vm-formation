@@ -60,7 +60,7 @@ docker login
 - Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)  
 - creation d'un job freestyle : pas de client git?  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git -restart  
-- configuration du job 01-ATM-BUILD sur https://github.com/Finaxys/bluebank-atm-server.git et https://github.com/Finaxys/bluebank-atm-client.git (nom: bluebank-atm-server/client)  
+- configuration du job 01-ATM-BUILD en multiple SCMs sur https://github.com/Finaxys/bluebank-atm-server.git et https://github.com/Finaxys/bluebank-atm-client.git (nom: bluebank-atm-server/client avec un subdir pour chaque URL)  
 - positionner le polling : toutes les deux minutes
 - build echoue : pas de maven ? installer  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-tool  

@@ -101,9 +101,21 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 SCM : le meme  
 etape 1 (shell) : wget --no-verbose http://traineegrp-nexus:8081/content/repositories/releases/org/bluebank/atm/bluebank-atm/ATMSERVER-${PIPELINE_VERSION}/bluebank-atm-ATMSERVER-${PIPELINE_VERSION}.war -O 02-PACKAGE-ATM/bluebank-atm-ATMSERVER.war
 etape 2 (shell) : sudo docker build --tag=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} 02-PACKAGE-ATM
-etape 3 (shell) : sudo docker run -itd traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} --label=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} > atm.containerid
-etape 4 (shell) : sudo docker stop `cat atm.containerid` ; sudo docker rm `cat atm.containerid`
-# TODO : copier le contenu du client
+etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELINE_VERSION} -itd -p 888${TRAINEEGREPID}:80 -p 818${TRAINEEGREPID}:8180 > atm.containerid
+
+## creation d'un scenario de test sur le conteneur
+- verifier l'URL http://<VM>:<port_80_mappe>/accounts/b73cf3a6-8f29-4ef1-955a-94c7efae01af : doit correspondre a la carte 5555444433331111
+- installer gatling en local (http://gatling.io/#/download) et lancer le recorder en mode proxy 8000
+- configurer un navigateur sur ce proxy et ouvrir l'URL http://<VM>:<port_80_mappe>/accounts/b73cf3a6-8f29-4ef1-955a-94c7efae01af
+- enregistrer la sequence (C:\dev\gatling-charts-highcharts-bundle-2.1.7\user-files\simulations\RecordedSimulation.scala) et la committer dans le projet
+- installer gatling dans le conteneur jenkins pour pouvoir rejouer la sequence de test
+- docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin gatling -restart
+- TODO : install de gatling sur jenkins + activation du run
+etape 1 (shell) : sudo 
+etape 2 (shell) : docker stop `cat atm.containerid` ; sudo docker rm `cat atm.containerid`
+
+
+##  TODO : copier le contenu du client
 
 ## import en registry + deploiement vers la prod (tutum)
 

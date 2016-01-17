@@ -116,7 +116,7 @@ RUN cd /tmp && \
     wget https://oss.sonatype.org/content/repositories/releases/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.1.7/gatling-charts-highcharts-bundle-2.1.7-bundle.zip && \
     unzip gatling-charts-highcharts-bundle-2.1.7-bundle.zip
 - ajouter un step qui appelle gatling
-/tmp/gatling-charts-highcharts-bundle-2.1.7/bin/gatling.sh --simulations-folder . --output-name ./gatling_reports --simulation CheckATMStatus
+/tmp/gatling-charts-highcharts-bundle-2.1.7/bin/gatling.sh --simulations-folder . --results-folder . --output-name gatling_reports --simulation CheckATMStatus
 - TODO : install de gatling sur jenkins + activation du run
 etape 1 (shell) : sudo 
 etape 2 (shell) : docker stop `cat atm.containerid` ; sudo docker rm `cat atm.containerid`

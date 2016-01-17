@@ -111,6 +111,12 @@ etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELI
 - enregistrer la sequence (C:\dev\gatling-charts-highcharts-bundle-2.1.7\user-files\simulations\RecordedSimulation.scala) et la committer dans le projet
 - installer gatling dans le conteneur jenkins pour pouvoir rejouer la sequence de test
 - docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin gatling -restart
+- installer egalement gatling dans le conteneur jenkins et le rebuilder/redeployer
+RUN cd /tmp && \
+    wget https://oss.sonatype.org/content/repositories/releases/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.1.7/gatling-charts-highcharts-bundle-2.1.7-bundle.zip && \
+    unzip gatling-charts-highcharts-bundle-2.1.7-bundle.zip
+- ajouter un step qui appelle gatling
+/tmp/gatling-charts-highcharts-bundle-2.1.7/bin/gatling.sh --simulations-folder . --ouput-name ./gatling_reports --simulation CheckATMStatus
 - TODO : install de gatling sur jenkins + activation du run
 etape 1 (shell) : sudo 
 etape 2 (shell) : docker stop `cat atm.containerid` ; sudo docker rm `cat atm.containerid`

@@ -4,7 +4,7 @@ FROM jenkins:1.625.3
 USER root
  
 # MODULES INSTALL : GIT, PROTOBUF, PUPPET, SUDO
-RUN apt-get update && apt-get install -y git protobuf-compiler puppet apt-transport-https sudo
+RUN apt-get update && apt-get install -y git protobuf-compiler puppet apt-transport-https sudo wget
 
 # DOCKER REPOS SETUP - YEAH, DOCKER IN DOCKER ;)
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
@@ -37,3 +37,8 @@ RUN mkdir -p //var/jenkins_home/maven3 && \
     wget -qO- "http://archive.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz" | tar -zx --strip-components=1 -C /var/jenkins_home/maven3 && \
     echo "export M2_HOME=$M2_HOME" >> /var/jenkins_home/.bashrc && \
     echo "export PATH=$PATH" >> /var/jenkins_home/.bashrc
+
+# GATLING INSTALL "A LA MANO"
+RUN cd /tmp && \
+    wget https://oss.sonatype.org/content/repositories/releases/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.1.7/gatling-charts-highcharts-bundle-2.1.7-bundle.zip && \
+    unzip gatling-charts-highcharts-bundle-2.1.7-bundle.zip

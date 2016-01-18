@@ -108,21 +108,9 @@ etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELI
 - verifier l'URL http://<VM>:<port_80_mappe>/accounts/b73cf3a6-8f29-4ef1-955a-94c7efae01af : doit correspondre a la carte 5555444433331111
 - installer gatling en local (http://gatling.io/#/download) et lancer le recorder en mode proxy 8000
 - configurer un navigateur sur ce proxy et ouvrir l'URL http://<VM>:<port_80_mappe>/accounts/b73cf3a6-8f29-4ef1-955a-94c7efae01af
-- enregistrer la sequence (C:\dev\gatling-charts-highcharts-bundle-2.1.7\user-files\simulations\RecordedSimulation.scala) et la committer dans le projet
-- installer gatling dans le conteneur jenkins pour pouvoir rejouer la sequence de test
-- docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin gatling -restart
-- installer egalement gatling dans le conteneur jenkins et le rebuilder/redeployer
-RUN cd /tmp && \
-    wget https://oss.sonatype.org/content/repositories/releases/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.1.7/gatling-charts-highcharts-bundle-2.1.7-bundle.zip && \
-    unzip gatling-charts-highcharts-bundle-2.1.7-bundle.zip
-- ajouter un step qui appelle gatling
-/tmp/gatling-charts-highcharts-bundle-2.1.7/bin/gatling.sh --simulations-folder . --results-folder . --output-name gatling_reports --simulation CheckATMStatus
-- TODO : install de gatling sur jenkins + activation du run
-etape 1 (shell) : sudo 
-etape 2 (shell) : docker stop `cat atm.containerid` ; sudo docker rm `cat atm.containerid`
-
-
-##  TODO : copier le contenu du client
+- enregistrer la sequence (C:\dev\gatling-charts-highcharts-bundle-2.1.7\user-files\simulations\RecordedSimulation.scala) et la committer dans le projet  
+- relancer la sequence comme suit :  
+gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server --simulation CheckATMConnectivity
 
 ## import en registry + deploiement vers la prod (tutum)
 

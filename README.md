@@ -30,7 +30,9 @@ alias dockerrmall='docker ps -a | grep -v CONTAINER | awk '"'"'{print $1}'"'"' |
 alias dockerrmiall='docker images | grep -v "IMAGE ID" | awk '"'"'{print $3}'"'"' | xargs docker rmi'  
 - ajout des comptes dans le groupe docker (/etc/group)   docker:x:GID:traineegrp,traineegrp1,traineegrp2,traineegrp3,traineegrp4,traineegrp5  
 - creation du repertoire des volumes avec les bons droits
-mkdir -p /volumes ; chgrp docker /volumes ; chmod 777 /volumes
+mkdir -p /volumes ; chgrp docker /volumes ; chmod 777 /volumes  
+- configuration de routage pour les conteneurs  
+sudo iptables -A DOCKER -p tcp -j ACCEPT
 
 ## mise en place du backlog (manager/ba)
 - crea de comptes github pour tout le monde  

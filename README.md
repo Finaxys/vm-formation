@@ -116,7 +116,7 @@ etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELI
 - relancer la sequence comme suit :  
 gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server --simulation CheckATMConnectivity
 
-## import en registry + deploiement vers la prod (tutum)
+## import du container dans la registry
 - Creation d'un job qui va stopper/supprimer le container local et pusher vers github.io : 03-ATM-PUSH-REGISTRY  
 - ajout des parametres de connexion DOCKER_LOGIN, DOCKER EMAIL (parametres string) et DOCKER_PASSWORD (variable injectee de type password) pour se connecter a la registry
 sudo docker stop $CONTAINER_ID && sudo docker rm $CONTAINER_ID  
@@ -125,6 +125,10 @@ sudo docker tag traineegrp${TRAINEEGRPID}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER
 sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER}
 sudo docker push ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION} 
   
+## deploiement vers le cloud (tutum)
+- creer un compte tutum (le compte docker)  
+- TODO la suite
+
 TODO : ajout du push  
   
 - Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE

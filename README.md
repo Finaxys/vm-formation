@@ -116,9 +116,15 @@ gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server 
 
 ## import en registry + deploiement vers la prod (tutum)
 - Creation d'un job qui va stopper/supprimer le container local et pusher vers github.io : 03-ATM-PUSH-REGISTRY  
-sudo docker stop $CONTAINER_ID && sudo docker rm $CONTAINER_ID
-TODO : ajout du push
-
+- ajout des parametres de connexion DOCKER_LOGIN, DOCKER_PASSWORD (type password) et DOCKER_EMAIL  pour se connecter a la registry
+sudo docker stop $CONTAINER_ID && sudo docker rm $CONTAINER_ID  
+- Copie de l'image afin de pouvoir la pousser sur la registry  
+sudo docker tag traineegrp${TRAINEEGRPID}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION}  
+sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER}  
+sudo docker pull ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION}  
+  
+TODO : ajout du push  
+  
 - Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE
 echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid
 - Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY (passer les parametres du build + SHA1 courant + fichier atm.containerid)

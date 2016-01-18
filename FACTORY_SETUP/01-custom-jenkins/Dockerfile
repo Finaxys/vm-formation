@@ -38,7 +38,7 @@ RUN mkdir -p //var/jenkins_home/maven3 && \
     echo "export M2_HOME=$M2_HOME" >> /var/jenkins_home/.bashrc && \
     echo "export PATH=$PATH" >> /var/jenkins_home/.bashrc
 
-# GATLING INSTALL "A LA MANO"
-RUN cd /tmp && \
-    wget https://oss.sonatype.org/content/repositories/releases/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.1.7/gatling-charts-highcharts-bundle-2.1.7-bundle.zip && \
-    unzip gatling-charts-highcharts-bundle-2.1.7-bundle.zip
+# GATLING INSTALL "A LA MANO" DISABLED FOR NOW
+# RUN cd /tmp && \
+#    wget https://oss.sonatype.org/content/repositories/releases/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.1.7/gatling-charts-highcharts-bundle-2.1.7-bundle.zip && \
+#    unzip gatling-charts-highcharts-bundle-2.1.7-bundle.zip

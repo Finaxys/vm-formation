@@ -119,9 +119,9 @@ gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server 
 - ajout des parametres de connexion DOCKER_LOGIN, DOCKER_PASSWORD (type password) et DOCKER_EMAIL  pour se connecter a la registry
 sudo docker stop $CONTAINER_ID && sudo docker rm $CONTAINER_ID  
 - Copie de l'image afin de pouvoir la pousser sur la registry  
-sudo docker tag traineegrp${TRAINEEGRPID}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION}  
-sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER}  
-sudo docker pull ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION}  
+sudo docker tag traineegrp${TRAINEEGRPID}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION}
+sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER}
+sudo docker push ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION} 
   
 TODO : ajout du push  
   

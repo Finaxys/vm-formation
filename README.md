@@ -118,7 +118,9 @@ gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server 
 - Creation d'un job qui va stopper/supprimer le container local et pusher vers github.io : 03-ATM-PUSH-REGISTRY  
 - TODO a definir
   (ajouter les current build parameters + sha1 GIT)
-- Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY  
+- Ajouter une step shell dans pour passer l'ID du container vers le job suivant
+export CONTAINER_ID=`cat atm.containerid`  
+- Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY (passer les parametres du build + SHA1 courant)
   
 ## mise en place de la metrologie (elastic)  
 

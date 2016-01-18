@@ -83,8 +83,9 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 - apres analyse, ajouter les widgets integration tests et pitest reports dans sonarqube et comparer les resultats => rien sur pitest?  
 - installer le plugin envinject sur jenkins  
 docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin envinject -restart  
+- Injecter une variable password NEXUS_CONNEXION correspondant au <user>:<pasword> utilisé pour se connecter à Nexus
 - Remplacer le goal maven pour inclure le deploiement des binaires  
-clean deploy -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage  -DaltDeploymentRepository=releases::default::http://admin:admin123@traineegrp-nexus:8081/content/repositories/releases  
+clean deploy -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage  -DaltDeploymentRepository=releases::default::http://${NEXUS_CONNEXION}@traineegrp-nexus:8081/content/repositories/releases  
 - definir un environnement pour le build avec le properties content suivant : PIPELINE_VERSION=${BUILD_NUMBER}
 - modifier la version du pom.xml en ATMSERVER-${env.PIPELINE_VERSION} et pusher ... le job doit marcher  
 - Ajouter en post-task un publish git avec le tag en ATMSERVER-${PIPELINE_VERSION} create vers le repo bluebank-atm-server

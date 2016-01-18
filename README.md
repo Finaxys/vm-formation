@@ -117,7 +117,7 @@ gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server 
 
 ## import en registry + deploiement vers la prod (tutum)
 - Creation d'un job qui va stopper/supprimer le container local et pusher vers github.io : 03-ATM-PUSH-REGISTRY  
-- ajout des parametres de connexion DOCKER_LOGIN, DOCKER_PASSWORD (type password) et DOCKER_EMAIL  pour se connecter a la registry
+- ajout des parametres de connexion DOCKER_LOGIN, DOCKER EMAIL (parametres string) et DOCKER_PASSWORD (variable injectee de type password) pour se connecter a la registry
 sudo docker stop $CONTAINER_ID && sudo docker rm $CONTAINER_ID  
 - Copie de l'image afin de pouvoir la pousser sur la registry  
 sudo docker tag traineegrp${TRAINEEGRPID}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION}

@@ -115,7 +115,11 @@ etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELI
 gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server --simulation CheckATMConnectivity
 
 ## import en registry + deploiement vers la prod (tutum)
-
+- Creation d'un job qui va stopper/supprimer le container local et pusher vers github.io : 03-ATM-PUSH-REGISTRY  
+- TODO a definir
+  (ajouter les current build parameters + sha1 GIT)
+- Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY  
+  
 ## mise en place de la metrologie (elastic)  
 
 ## creation d'une feature pour pousser le pipeline de bout en bout  

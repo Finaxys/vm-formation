@@ -44,7 +44,7 @@ sudo iptables -A DOCKER -p tcp -j ACCEPT
 ## mise en place du workspace de developpement (dev)  
 - recuperation du projet server : https://github.com/Finaxys/bluebank-atm-server.git en repo public  
 - analyse du projet  
-- build maven : creer des configurations de build pour : compilation et tests u, execution et generation des rapports BDD, execution des rapports de mutation testing, demarrage du serveur et de la GUI (install de protoc + path, definition de PIPELINE_VERSION en SNAPSHOT, install de node + path...)  
+- build maven : creer des configurations de build pour : compilation et tests u, execution et generation des rapports BDD, execution des rapports de mutation testing, demarrage du serveur et de la GUI (install de protoc + path, definition de PIPELINE_VERSION en SNAPSHOT, install de node + path...)
   
 ## mise en place de l'IC (dev/ops)  
 - Creation d'un compte docker.io (prendre le github)  
@@ -69,6 +69,8 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 This command can be only invoked from a build executing inside Hudson  
 - configurer un maven basé sur le home suivant : /var/jenkins_home/maven3 (installe via puppet)  
 - configurer un java basé sur le home suivant : /usr/lib/jvm/java-8-openjdk-amd64 (installé via puppet)
+- creer un step shell pour inclure la version de pipeline dans le binaire  
+sed -i "s|<title></title>|<title>ATM-${PIPELINE_VERSION}</title>|g" node-client/index.html  
 - configurer le build maven comme ceci : clean install -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage
 - sur sonarcube, installer les plugins suivants: checkstyle, PMD, findbugs, github et pitest  
 - sur jenkins, installer les plugins sonar, htmlpublisher, jobConfigHistory, saferestart, pitmutation  
@@ -136,9 +138,7 @@ Quand le noeud est deploye, il est possible de l'utiliser pour installer/demarre
 - Dans "Services", faire une recherche sur le nom : atm doit apparaitre  
 - Demarrer le service en exposant les ports 80 et 8081 sur les memes valeurs (ATTENTION : IL FAUT UNE VM PAR TRAINEE!)  
 - Demarrer et deployer "a la main" pour tester : l'application doit etre accessible et exploitable sur le net :)
-- 
-TODO : ajout du push  
-  
+- TODO : push via API rest (crul depuis jenkins) ou cli (necessite python + le cli) 
   
 - Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE  
 echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid  

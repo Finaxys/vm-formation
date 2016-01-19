@@ -126,16 +126,18 @@ sudo docker tag -f ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:l
 sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER}  
 sudo docker push ${LOGIN_DOCKER}/atm  
   
-## deploiement vers le cloud (tutum)
+## deploiement vers le cloud (tutum)  
 - creer un compte tutum (le compte docker)  
-- TODO la suite
-
+- declarer la VM dans l'onglet "bring your own node"  (vagrantnode ici donc ubuntu LTS 14.04)  
+- executer la commande d'installation de l'agent tutum proposee sur le site  
+sudo curl -Ls https://get.tutum.co/ | sudo -H sh -s ******************************  
+    
 TODO : ajout du push  
   
-- Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE
-echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid
-- Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY (passer les parametres du build + SHA1 courant + fichier atm.containerid)
-  
+- Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE  
+echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid  
+- Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY (passer les parametres du build + SHA1 courant + fichier atm.containerid)  
+    
 ## mise en place de la metrologie (elastic)  
 
 ## creation d'une feature pour pousser le pipeline de bout en bout  

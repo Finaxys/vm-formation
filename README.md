@@ -131,8 +131,10 @@ sudo docker push ${LOGIN_DOCKER}/atm
 - declarer la VM dans l'onglet "bring your own node"  (vagrantnode ici donc ubuntu LTS 14.04)  
 - executer la commande d'installation de l'agent tutum proposee sur le site  
 sudo curl -Ls https://get.tutum.co/ | sudo -H sh -s ******************************  
-    
+Quand le noeud est deploye, il est possible de l'utiliser pour installer/demarrer des containers dessus   
+- Ajouter en repository le <user>/atm (avec <user> et <password> pour se connecter)
 TODO : ajout du push  
+  
   
 - Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE  
 echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid  

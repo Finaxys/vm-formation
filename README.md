@@ -104,10 +104,10 @@ docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenki
 - Editer le job 02-ATM-PACKAGE ui doit creer une image de l'ATM, la lancer, la versionner  
 SCM : le meme  
 etape 1 (shell) : wget --no-verbose http://traineegrp-nexus:8081/content/repositories/releases/org/bluebank/atm/bluebank-atm/ATMSERVER-${PIPELINE_VERSION}/bluebank-atm-ATMSERVER-${PIPELINE_VERSION}.war -O 02-PACKAGE-ATM/bluebank-atm-ATMSERVER.war
-- mettre a jour le javascript pour utiliser le port 818${TRAINEEGREPID} en "dur" (node-client/scripts/main.js, fixe a 8180 par defaut) et le CheckATMConnectivity.scala (ports HTTP et l'autre)
-etape 2 (shell) : sudo docker build --tag=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} 02-PACKAGE-ATM
-etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELINE_VERSION} -itd -p 888${TRAINEEGREPID}:80 -p 818${TRAINEEGREPID}:8180 > atm.containerid
-
+- mettre a jour le javascript pour utiliser le port 818${TRAINEEGREPID} en "dur" (node-client/scripts/main.js, fixe a 8180 par defaut) et le CheckATMConnectivity.scala (ports HTTP et l'autre)  
+etape 2 (shell) : sudo docker build --tag=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} 02-PACKAGE-ATM  
+etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELINE_VERSION} -itd -p 888${TRAINEEGREPID}:80 -p 818${TRAINEEGREPID}:8180 > atm.containerid  
+  
 ## creation d'un scenario de test sur le conteneur
 - verifier l'URL http://<VM>:<port_80_mappe>/accounts/b73cf3a6-8f29-4ef1-955a-94c7efae01af : doit correspondre a la carte 5555444433331111
 - installer gatling en local (http://gatling.io/#/download) et lancer le recorder en mode proxy 8000

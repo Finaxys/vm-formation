@@ -118,7 +118,7 @@ gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server 
 
 ## import du container dans la registry
 - Creation d'un job qui va stopper/supprimer le container local et pusher vers github.io : 03-ATM-PUSH-REGISTRY  
-- ajout des parametres de connexion DOCKER_LOGIN, DOCKER EMAIL (parametres string) et DOCKER_PASSWORD (variable injectee de type password) pour se connecter a la registry
+- ajout des parametres de connexion e ntant que variables injectees de type password "DOCKER_LOGIN", "DOCKER EMAIL" et  "DOCKER_PASSWORD" (variable injectee de type password) pour se connecter a la registry
 sudo docker stop $CONTAINER_ID && sudo docker rm $CONTAINER_ID  
 - Copie de l'image afin de pouvoir la pousser sur la registry  
 sudo docker tag -f traineegrp${TRAINEEGRPID}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION}  

@@ -71,6 +71,7 @@ This command can be only invoked from a build executing inside Hudson
 - configurer un java basé sur le home suivant : /usr/lib/jvm/java-8-openjdk-amd64 (installé via puppet)
 - creer un step shell pour inclure la version de pipeline dans le binaire  
 sed -i "s|<title></title>|<title>ATM-${PIPELINE_VERSION}</title>|g" node-client/index.html  
+sed -i "s|BLUEBANK ATM|BLUEBANK ATM v${PIPELINE_VERSION}|g" node-client/index.html  
 - configurer le build maven comme ceci : clean install -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage
 - sur sonarcube, installer les plugins suivants: checkstyle, PMD, findbugs, github et pitest  
 - sur jenkins, installer les plugins sonar, htmlpublisher, jobConfigHistory, saferestart, pitmutation  

@@ -138,11 +138,13 @@ Quand le noeud est deploye, il est possible de l'utiliser pour installer/demarre
 - Dans "Services", faire une recherche sur le nom : atm doit apparaitre  
 - Demarrer le service en exposant les ports 80 et 8081 sur les memes valeurs (ATTENTION : IL FAUT UNE VM PAR TRAINEE!)  
 - Demarrer et deployer "a la main" pour tester : l'application doit etre accessible et exploitable sur le net :)
+
+- Creer un downstream job de 03 : 04-DEPLOY-PROD qui passe l'environnement du build precedent 
 - TODO : push via API rest (crul depuis jenkins) ou cli (necessite python + le cli) 
-  
 - Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE  
 echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid  
 - Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY (passer les parametres du build + SHA1 courant + fichier atm.containerid)  
+- 
     
 ## mise en place de la metrologie (elastic)  
 

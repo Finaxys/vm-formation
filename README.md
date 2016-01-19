@@ -132,7 +132,11 @@ sudo docker push ${LOGIN_DOCKER}/atm
 - executer la commande d'installation de l'agent tutum proposee sur le site  
 sudo curl -Ls https://get.tutum.co/ | sudo -H sh -s ******************************  
 Quand le noeud est deploye, il est possible de l'utiliser pour installer/demarrer des containers dessus   
-- Ajouter en repository le <user>/atm (avec <user> et <password> pour se connecter)
+- Ajouter en repository le <user>/atm (avec <user> et <password> pour se connecter)  
+- Dans "Services", faire une recherche sur le nom : atm doit apparaitre  
+- Demarrer le service en exposant les ports 80 et 8081 sur les memes valeurs (ATTENTION : IL FAUT UNE VM PAR TRAINEE!)  
+- Demarrer et deployer "a la main" pour tester : l'application doit etre accessible et exploitable sur le net :)
+- 
 TODO : ajout du push  
   
   

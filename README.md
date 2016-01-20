@@ -129,7 +129,7 @@ sudo docker tag -f ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:l
 sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER}  
 sudo docker push ${LOGIN_DOCKER}/atm  
   
-## deploiement vers le cloud (tutum)  
+## deploiement vers le cloud (tutum) EN MANUEL 
 - creer un compte tutum (le compte docker)  
 - declarer la VM dans l'onglet "bring your own node"  (vagrantnode ici donc ubuntu LTS 14.04)  
 - executer la commande d'installation de l'agent tutum proposee sur le site  
@@ -140,6 +140,7 @@ Quand le noeud est deploye, il est possible de l'utiliser pour installer/demarre
 - Demarrer le service en exposant les ports 80 et 8081 sur les memes valeurs (ATTENTION : IL FAUT UNE VM PAR TRAINEE!)  
 - Demarrer et deployer "a la main" pour tester : l'application doit etre accessible et exploitable sur le net :)
 
+## deploiement vers le cloud (tutum) EN AUTO
 - Creer un downstream job de 03 : 04-DEPLOY-PROD qui passe l'environnement du build precedent 
 - TODO : push via API rest (crul depuis jenkins) ou cli (necessite python + le cli) 
 - Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE  
@@ -149,6 +150,10 @@ echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid
 - En se basant sur l'API https://docs.tutum.co/v2/api/?http#redeploy-a-service, trouver le bon moyen de redeployer le service via jenkins (generer API key pour definir la connexion <user>:<TUTUM_API_KEY> en tant que parametre "password" et prendre le UUID, puis API de redeploy)  
 Recup de l'UUID : export TUTUM_API_KEY="<user>:<TUTUM_API_KEY>" &&  curl -u ${TUTUM_API_KEY} https://dashboard.tutum.co/api/v1/service/ | grep --color -i uuid  
 - curl -u ${TUTUM_API_KEY} --request POST https://dashboard.tutum.co/api/v1/service/${TUTUM_SERVICE_UUID}/redeploy/  
+- rajouter les params de connexion du job 03 dans 04  pour le step shell qui va pousser dans la registry tutum  
+sudo docker tag -f ${LOGIN_DOCKER}/atm:latest tutum.co/${LOGIN_DOCKER}/atm:latest   
+sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER} tutum.co  
+sudo docker push tutum.co/${LOGIN_DOCKER}/atm:latest  
     
 ## mise en place de la metrologie (elastic)  
 

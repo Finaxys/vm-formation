@@ -156,8 +156,10 @@ sudo docker push tutum.co/${LOGIN_DOCKER}/atm:latest
     
 ## mise en place de la metrologie (elastic)  
 - installer le plugin elastic sur jenkins  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin logstash -restart  
+docker exec -ti traineegrp${TRAINEEGRPID}-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin logstash -restart  
 - declarer le serveur ELK dans la configuration du jenkins master  (ELASTICSEARCH, traineegrp-elk, 9200, pas user/password, jenkins/object)   
+- installer head  
+docker exec -ti traineegrp${TRAINEEGRPID}-elk /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
 - dans chaque job activer logstash et lancer le pipeline  
 
 ## creation d'une feature pour pousser le pipeline de bout en bout  

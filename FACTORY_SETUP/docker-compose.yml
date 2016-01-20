@@ -32,10 +32,11 @@ sonar:
   links:
    - elk
 elk:
-  image: "elasticsearch:2.1.1"
+  image: "sebp/elk:E1L1K4"
   ports:
    - "920${TRAINEEGRPID}:9200"
    - "930${TRAINEEGRPID}:9300"
+   - "560${TRAINEEGRPID}:5601"
   volumes: 
    - /volumes/elk//traineegrp${TRAINEEGRPID}-elk:/usr/share/elasticsearch/data
   container_name: traineegrp${TRAINEEGRPID}-elk

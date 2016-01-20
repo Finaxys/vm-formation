@@ -144,7 +144,8 @@ Quand le noeud est deploye, il est possible de l'utiliser pour installer/demarre
 - TODO : push via API rest (crul depuis jenkins) ou cli (necessite python + le cli) 
 - Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE  
 echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid  
-- Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY (passer les parametres du build + SHA1 courant + fichier atm.containerid)  
+- Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY (passer les parametres du build + SHA1 courant + fichier atm.containerid)
+- Creer un mot de passe sur la console tutum
 - En se basant sur l'API https://docs.tutum.co/v2/api/?http#redeploy-a-service, trouver le bon moyen de redeployer le service via jenkins (generer API key pour definir la connexion <user>:<TUTUM_API_KEY> en tant que parametre "password" et prendre le UUID, puis API de redeploy)  
 Recup de l'UUID : export TUTUM_API_KEY="<user>:<TUTUM_API_KEY>" &&  curl -u ${TUTUM_API_KEY} https://dashboard.tutum.co/api/v1/service/ | grep --color -i uuid  
 - curl -u ${TUTUM_API_KEY} --request POST https://dashboard.tutum.co/api/v1/service/${TUTUM_SERVICE_UUID}/redeploy/  

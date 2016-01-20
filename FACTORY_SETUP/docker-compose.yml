@@ -39,5 +39,5 @@ elk:
    - "930${TRAINEEGRPID}:9300"
    - "560${TRAINEEGRPID}:5601"
   volumes: 
-   - /volumes/elk//traineegrp${TRAINEEGRPID}-elk:/usr/share/elasticsearch/data
+   - /volumes/elk/traineegrp${TRAINEEGRPID}-elk:/var/lib/elasticsearch
   container_name: traineegrp${TRAINEEGRPID}-elk

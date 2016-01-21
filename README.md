@@ -164,9 +164,19 @@ docker exec -ti traineegrp${TRAINEEGRPID}-elk /usr/share/elasticsearch/bin/plugi
 ATTENTION : certaines informations sensibles (password etc) ne sont pas obfusquées ... d'ou l'interet d'un filtrage prealable
 - dans Kibana creer un index pattern jenkins base sur @timestamp
 - choisir via le time picker une plage week to date : les donnees doivent apparaitre  
-- selectionner la requete : message:"*Finished: SUCCESS*"  AND _exists_:data.buildVariables.PIPELINE_VERSION  
+- entrer la requete : message:"*Finished: SUCCESS*"  AND _exists_:data.buildVariables.PIPELINE_VERSION  
 - choisir les colonnes data.rootProjectName et data.buildVariables.PIPELINE_VERSION : le rendu permet d'avoir un historique des etapes reussies pour chaque version livree  
--   
-  
-## creation d'une feature pour pousser le pipeline de bout en bout  
+- Sauver la recherche en tant que PHASE_PER_VERSION  
+- Remplacer la requete par : message:"*Finished: SUCCESS*"  OR  message:"*Finished: FAILURE*"  
+- choisir les colonnes data.rootProjectName,  data.buildVariables.PIPELINE_VERSION, data.buildDuration et message : le rendu permet d'avoir le temps d'execution de toutes les phases reussies ou non pour chaque version  
+- Sauver cette nouvelle recherche en tant que DURATION_PER_VERSION  
+- Creer une visualisation de type Vertical Bar associee a DURATION_PER_VERSION :  
+- sur l'axe Y choisir un sum sur data.buildDuration  
+- en split bars choisir le term correspondant a PIPELINE_VERSION, Order TOP size 100, Order by Custom Metric Count  
+- en X, subagregation sur le term data.projectName, Order TOP size 100, sum of data.buildDuration  
+- voir l'affichage : les champs sont tronqués en abcisse!  
+- sauver la visu en DURATION_PER_VERSION et revenir sur Settings / Indices / jenkins  
+- dans settings -> indices, TODO
+
+- ## creation d'une feature pour pousser le pipeline de bout en bout  
   

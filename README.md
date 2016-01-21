@@ -154,12 +154,19 @@ sudo docker push tutum.co/${LOGIN_DOCKER}/atm:latest
 - lancer a la main une fois, creer un node depuis la registry tutum, activer le autodeploy et deployer (memes bindings)  
 - lancer le pipeline: l'appli doit se mettre a jour en automatique :)  
     
-## mise en place de la metrologie (elastic)  
+## mise en place de la metrologie (elastic) sur jenkins
 - installer le plugin elastic sur jenkins  
 docker exec -ti traineegrp${TRAINEEGRPID}-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin logstash -restart  
 - declarer le serveur ELK dans la configuration du jenkins master  (ELASTICSEARCH, http://traineegrp-elk, 9200, pas user/password, jenkins/object)   
 - installer head  
 docker exec -ti traineegrp${TRAINEEGRPID}-elk /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
-- dans chaque job activer logstash et lancer le pipeline  
-
+- dans chaque job activer logstash et lancer le pipeline : les données de build doivent remonter dans elastic  
+ATTENTION : certaines informations sensibles (password etc) ne sont pas obfusquées ... d'ou l'interet d'un filtrage prealable
+- dans Kibana creer un index pattern jenkins base sur @timestamp
+- choisir via le time picker une plage week to date : les donnees doivent apparaitre  
+- selectionner la requete : message:"*Finished: SUCCESS*"  AND _exists_:data.buildVariables.PIPELINE_VERSION  
+- choisir les colonnes data.rootProjectName et data.buildVariables.PIPELINE_VERSION : le rendu permet d'avoir un historique des etapes reussies pour chaque version livree  
+-   
+  
 ## creation d'une feature pour pousser le pipeline de bout en bout  
+  

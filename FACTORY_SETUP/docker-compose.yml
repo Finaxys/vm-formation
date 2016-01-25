@@ -1,12 +1,11 @@
 jenkins:
   build: ./01-custom-jenkins
   ports:
-   - "808${TRAINEEGRPID}:8080"
-   - "500${TRAINEEGRPID}:5000"
+   - "8080:8080"
   volumes:
-   - /volumes/jenkins/traineegrp${TRAINEEGRPID}-jenkins:/var/jenkins_home
+   - /volumes/jenkins:/var/jenkins_home
    - /var/run/docker.sock:/var/run/docker.sock
-  container_name: traineegrp${TRAINEEGRPID}-jenkins
+  container_name: traineegrp-jenkins
   privileged: true
   links:
   - sonar
@@ -16,28 +15,31 @@ jenkins:
 nexus:
   image: "sonatype/nexus:2.11.2-06"
   ports:
-   - "809${TRAINEEGRPID}:8081"
+   - "8081:8081"
   volumes:
-   - /volumes/nexus/traineegrp${TRAINEEGRPID}-nexus:/sonatype-work
-  container_name: traineegrp${TRAINEEGRPID}-nexus
+   - /volumes/nexus:/sonatype-work
+  container_name: traineegrp-nexus
   links:
   - elk
  
 sonar:
   image: "sonarqube:5.2"
   ports:
-   - "900${TRAINEEGRPID}:9000"
-   - "901${TRAINEEGRPID}:9092"
-  container_name: traineegrp${TRAINEEGRPID}-sonarqube
+   - "9000:9000"
+   - "9092:9092"
+  container_name: traineegrp-sonarqube
+  volumes:
+   - /volumes/sonar/data:/opt/sonarqube/data
+   - /volumes/sonar/extensions:/opt/sonarqube/extensions
   links:
    - elk
 
 elk:
   image: "sebp/elk:E1L1K4"
   ports:
-   - "920${TRAINEEGRPID}:9200"
-   - "930${TRAINEEGRPID}:9300"
-   - "560${TRAINEEGRPID}:5601"
+   - "9200:9200"
+   - "9300:9300"
+   - "5601:5601"
   volumes: 
-   - /volumes/elk/traineegrp${TRAINEEGRPID}-elk:/var/lib/elasticsearch
-  container_name: traineegrp${TRAINEEGRPID}-elk
+   - /volumes/elk:/var/lib/elasticsearch
+  container_name: traineegrp-elk

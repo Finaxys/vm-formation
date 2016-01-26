@@ -38,7 +38,6 @@ elk:
   image: "sebp/elk:E1L1K4"
   ports:
    - "9200:9200"
-   - "9300:9300"
    - "5601:5601"
   volumes: 
    - /volumes/elk:/var/lib/elasticsearch

@@ -4,7 +4,7 @@ FROM jenkins:1.625.3
 USER root
  
 # MODULES INSTALL : GIT, PROTOBUF, PUPPET, SUDO
-RUN apt-get update && apt-get install -y git protobuf-compiler puppet apt-transport-https sudo wget telnet vim
+RUN apt-get update && apt-get install -y git protobuf-compiler apt-transport-https sudo wget telnet vim
 
 # DOCKER REPOS SETUP - YEAH, DOCKER IN DOCKER ;)
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D && \
@@ -17,28 +17,10 @@ RUN apt-get install -y docker-engine && \
     echo "jenkins ALL=NOPASSWD:ALL" | (EDITOR="tee -a" visudo) && \ 
     usermod -aG docker jenkins
 
-# PUPPET MODULES INSTALL : rtyler-jenkins original module points to /var/lib/jenkins whereas docker image uses /var/jenkins_home! => hacked in postconfig/puppet_modules
-COPY ./postconfig /tmp/
-RUN puppet module install puppetlabs-stdlib -v 4.6.0 ;\
-    puppet module install puppetlabs-apt -v 2.2.1 ;\
-    puppet module install puppetlabs-java -v 1.4.3 ;
-
-# puppet post-configuration : install java8
-RUN puppet apply /tmp/jenkinsconfig/manifests/init.pp --modulepath=/tmp/puppet_modules:/etc/puppet/modules
-
 # GET BACK TO STANDARD USER
 USER jenkins
 
-# MAVEN INSTALL "A LA MANO"
-RUN echo "alias docker='sudo docker'" >> /var/jenkins_home/.bashrc
-ENV PATH $M2_HOME/bin:/usr/local/bin:$PATH
-ENV M2_HOME /var/jenkins_home/maven3
-RUN mkdir -p //var/jenkins_home/maven3 && \
-    wget -qO- "http://archive.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz" | tar -zx --strip-components=1 -C /var/jenkins_home/maven3 && \
-    echo "export M2_HOME=$M2_HOME" >> /var/jenkins_home/.bashrc && \
-    echo "export PATH=$PATH" >> /var/jenkins_home/.bashrc
-
 # GATLING INSTALL "A LA MANO" DISABLED FOR NOW
-# RUN cd /tmp && \
-#    wget https://oss.sonatype.org/content/repositories/releases/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.1.7/gatling-charts-highcharts-bundle-2.1.7-bundle.zip && \
-#    unzip gatling-charts-highcharts-bundle-2.1.7-bundle.zip
+RUN cd /tmp && \
+ wget https://oss.sonatype.org/content/repositories/releases/io/gatling/highcharts/gatling-charts-highcharts-bundle/2.1.7/gatling-charts-highcharts-bundle-2.1.7-bundle.zip && \
+  unzip gatling-charts-highcharts-bundle-2.1.7-bundle.zip

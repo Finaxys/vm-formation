@@ -21,7 +21,6 @@ exit
 for trainee in {1..5}; do for service in jenkins nexus sonar elk; do mkdir -p /volumes/${service}/traineegrp${trainee}-${service}/ ; done; done
 chown -R 1000:1000 /volumes/jenkins
 chown -R 200:200 /volumes/nexus
-
 - creation d'alias docker pour faciliter les choses  
 sudo vi /etc/profile.d/dockercmds.sh  
 contenu:  
@@ -34,83 +33,6 @@ mkdir -p /volumes ; chgrp docker /volumes ; chmod 777 /volumes
 - configuration de routage pour les conteneurs  
 sudo iptables -A DOCKER -p tcp -j ACCEPT
 
-## mise en place du backlog (manager/ba)
-- crea de comptes github pour tout le monde  
-- crea d'une orga github avec les 3 amigos + staff  
-- fork des projets server et client  
-- creation d'un backlog sur le fork du projet server via zenhub + invit de l'orga  
-=> panneau des feature teams  
-  
-## mise en place du workspace de developpement (dev)  
-- recuperation du projet server : https://github.com/Finaxys/bluebank-atm-server.git en repo public  
-- analyse du projet  
-- build maven : creer des configurations de build pour : compilation et tests u, execution et generation des rapports BDD, execution des rapports de mutation testing, demarrage du serveur et de la GUI (install de protoc + path, definition de PIPELINE_VERSION en SNAPSHOT, install de node + path...)
-  
-## mise en place de l'IC (dev/ops)  
-- Creation d'un compte docker.io (prendre le github)  
-docker login  
-- connexion a la VM par le compte traineegrp<ID>  
-- demarrage d'un conteneur docker jenkins : docker run -p 808{ID}:8080 -p 5000{ID}:50000 --name=traineegrp{ID}-jenkins jenkins, le lien http://{hostname}:8080  
-- description positionnee : THIS MESSAGE APPEARS IF THE CONTAINER IS PERSISTED  
-- Arrêt du conteneur (ctrl + c) puis redemarrage avec la meme commande : la description n'apparait plus sur la page  
-- description repositionnee : THIS MESSAGE APPEARS IF THE CONTAINER IS PERSISTED  
-- Arrêt du conteneur (ctrl + c) puis redemarrage avec l'option start : docker ps -a && docker start <id du conteneur>  
-=> le message est conservé cette fois  
-- sur le meme principe, creation d'un conteneur sonar :  docker run -d --name traineegrp{ID}-sonarqube -p 900{ID}:9000 -p 909{ID}:9092 sonarqube ? NON  
-- Recup du package formation (git clone)+ creation des images (docker-compose up)  
-- Modif de la description sur le jenkins : HELLO DOCKER-COMPOSE  
-- Stop des containers et re docker-compose up : la conf reste (restart le conteneur courant)  
-- creation d'un job freestyle : pas de client git?  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin git -restart  
-- configuration du job 01-ATM-BUILD avec l'url git sur https://github.com/Finaxys/bluebank-atm-server.git (nom: bluebank-atm-server)  
-- positionner le polling : toutes les deux minutes
-- build echoue : pas de maven ? installer  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-tool  
-This command can be only invoked from a build executing inside Hudson  
-- configurer un maven basé sur le home suivant : /var/jenkins_home/maven3 (installe via puppet)  
-- configurer un java basé sur le home suivant : /usr/lib/jvm/java-8-openjdk-amd64 (installé via puppet)
-- creer un step shell pour inclure la version de pipeline dans le binaire  
-sed -i "s|<title></title>|<title>ATM-${PIPELINE_VERSION}</title>|g" node-client/index.html  
-sed -i "s|BLUEBANK ATM|BLUEBANK ATM v${PIPELINE_VERSION}|g" node-client/index.html  
-- configurer le build maven comme ceci : clean install -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage
-- sur sonarcube, installer les plugins suivants: checkstyle, PMD, findbugs, github et pitest  
-- sur jenkins, installer les plugins sonar, htmlpublisher, jobConfigHistory, saferestart, pitmutation  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin sonar  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin htmlpublisher  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin jobConfigHistory
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin saferestart  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pitmutation -restart  
-- configurer une instance sonarcube sur http://traineegrp-sonarqube:9000 sans authent avec l'option sonar.pitest.mode=reuseReport  
-- modifier le job de DEV avec le runner sonar + publication des rapports junit (target/surefire-reports/*.xml), jgiven (html sur target/jgiven-reports/json/*.json) et pit mutation (conf par defaut) et relancer  
-- la page jgiven ne s'ouvre pas ? telecharger le zip, l'extraire et regarder  
-- apres analyse, ajouter les widgets integration tests et pitest reports dans sonarqube et comparer les resultats => rien sur pitest?  
-- installer le plugin envinject sur jenkins  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin envinject -restart  
-- Injecter une variable password NEXUS_CONNEXION correspondant au <user>:<pasword> utilisé pour se connecter à Nexus
-- Remplacer le goal maven pour inclure le deploiement des binaires  
-clean deploy -Pall-tests jacoco:report org.pitest:pitest-maven:mutationCoverage  -DaltDeploymentRepository=releases::default::http://${NEXUS_CONNEXION}@traineegrp-nexus:8081/content/repositories/releases  
-- definir un environnement pour le build avec le properties content suivant : PIPELINE_VERSION=${BUILD_NUMBER}
-- modifier la version du pom.xml en ATMSERVER-${env.PIPELINE_VERSION} et pusher ... le job doit marcher  
-- Ajouter en post-task un publish git avec le tag en ATMSERVER-${PIPELINE_VERSION} create vers le repo bluebank-atm-server
-- Echec : ajouter en additional behaviour le custom user/email pour autoriser le push des tags  
-- installer le plugin parameterized plugin  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin  parameterized-trigger -restart	
-
-## mise en place du pipeline (dev/ops)  
-- creer un job 02-ATM-PACKAGE de type freestyle (garder l'URL  + creds git du serveur)
-- mettre a jour le job 01-ATM-BUILD pour inclure 02-ATM-PACKAGE en parameterized downstream, avec le git passthrough + les params predefinis comme suit : PIPELINE_VERSION=${PIPELINE_VERSION}  
-- installer les plugins : build pipeline , rebuild, mask-passwords  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin build-pipeline-plugin  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin  mask-passwords  
-docker exec -ti traineegrp-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin rebuild -restart  
-- creer une vue pipeline ATM-PIPELINE et ajouter le job 01-ATM-BUILD
-- Editer le job 02-ATM-PACKAGE ui doit creer une image de l'ATM, la lancer, la versionner  
-SCM : le meme  
-etape 1 (shell) : wget --no-verbose http://traineegrp-nexus:8081/content/repositories/releases/org/bluebank/atm/bluebank-atm/ATMSERVER-${PIPELINE_VERSION}/bluebank-atm-ATMSERVER-${PIPELINE_VERSION}.war -O 02-PACKAGE-ATM/bluebank-atm-ATMSERVER.war
-- mettre a jour le javascript pour utiliser le port 818${TRAINEEGREPID} en "dur" (node-client/scripts/main.js, fixe a 8180 par defaut) et le CheckATMConnectivity.scala (ports HTTP et l'autre)  
-etape 2 (shell) : sudo docker build --tag=traineegrp${TRAINEEGREPID}/atm:${PIPELINE_VERSION} 02-PACKAGE-ATM  
-etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELINE_VERSION} -itd -p 888${TRAINEEGREPID}:80 -p 818${TRAINEEGREPID}:8180 > atm.containerid  
-  
 ## creation d'un scenario de test sur le conteneur
 - verifier l'URL http://<VM>:<port_80_mappe>/accounts/b73cf3a6-8f29-4ef1-955a-94c7efae01af : doit correspondre a la carte 5555444433331111
 - installer gatling en local (http://gatling.io/#/download) et lancer le recorder en mode proxy 8000
@@ -119,41 +41,6 @@ etape 3 (shell) : sudo docker run --name traineegrp${TRAINEEGREPID}-atm-${PIPELI
 - relancer la sequence comme suit :  
 gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server --simulation CheckATMConnectivity
 
-## import du container dans la registry
-- Creation d'un job qui va stopper/supprimer le container local et pusher vers github.io : 03-ATM-PUSH-REGISTRY  
-- ajout des parametres de connexion e ntant que variables injectees de type password "DOCKER_LOGIN", "DOCKER EMAIL" et  "DOCKER_PASSWORD" (variable injectee de type password) pour se connecter a la registry
-sudo docker stop $CONTAINER_ID && sudo docker rm $CONTAINER_ID  
-- Copie de l'image afin de pouvoir la pousser sur la registry  
-sudo docker tag -f traineegrp${TRAINEEGRPID}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION}  
-sudo docker tag -f ${LOGIN_DOCKER}/atm:${PIPELINE_VERSION} ${LOGIN_DOCKER}/atm:latest  
-sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER}  
-sudo docker push ${LOGIN_DOCKER}/atm  
-  
-## deploiement vers le cloud (tutum) EN MANUEL 
-- creer un compte tutum (le compte docker)  
-- declarer la VM dans l'onglet "bring your own node"  (vagrantnode ici donc ubuntu LTS 14.04)  
-- executer la commande d'installation de l'agent tutum proposee sur le site  
-sudo curl -Ls https://get.tutum.co/ | sudo -H sh -s ******************************  
-INFO : si besoin de redeployer le node : apt-get remove tutum-agent && rm -rf /etc/tutum avant reinstallation
-Quand le noeud est deploye, il est possible de l'utiliser pour installer/demarrer des containers dessus   
-- Ajouter en repository le <user>/atm (avec <user> et <password> pour se connecter)  
-- Dans "Services", faire une recherche sur le nom : atm doit apparaitre  
-- Demarrer le service en exposant les ports 80 et 8081 sur les memes valeurs (ATTENTION : IL FAUT UNE VM PAR TRAINEE!)  
-- Demarrer et deployer "a la main" pour tester : l'application doit etre accessible et exploitable sur le net :)
-
-## deploiement vers le cloud (tutum) EN AUTO  
-- Creer un downstream job de 03 : 04-DEPLOY-PROD qui passe l'environnement du build precedent 
-- Ajouter une step shell dans pour passer l'ID du container vers le job suivant dans 02-ATM-PACKAGE  
-echo "CONTAINER_ID=`cat atm.containerid`" > atm.containerid  
-- Creer un downstream job manuel dans 02-ATM-PACKAGE vers le job 03-ATM-PUSH-REGISTRY (passer les parametres du build + SHA1 courant + fichier atm.containerid)  
-- Creer un mot de passe sur la console tutum  
-- rajouter les params de connexion du job 03 dans 04  pour le step shell qui va pousser dans la registry tutum  
-sudo docker tag -f ${LOGIN_DOCKER}/atm:latest tutumjenkins/object .co/${LOGIN_DOCKER}/atm:latest   
-sudo docker login --username=${LOGIN_DOCKER} --password=${PASSWORD_DOCKER} --email=${EMAIL_DOCKER} tutum.co  
-sudo docker push tutum.co/${LOGIN_DOCKER}/atm:latest  
-- lancer a la main une fois, creer un node depuis la registry tutum, activer le autodeploy et deployer (memes bindings)  
-- lancer le pipeline: l'appli doit se mettre a jour en automatique :)  
-    
 ## mise en place de la metrologie (elastic) sur jenkins
 - installer le plugin elastic sur jenkins  
 docker exec -ti traineegrp${TRAINEEGRPID}-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin logstash -restart  

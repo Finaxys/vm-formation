@@ -1,4 +1,4 @@
-# vm-formation (centos 7)
+# vm-formation (centos 7) - https://github.com/Finaxys/bluebank-atm-server
 
 Rappels : deux VMs par groupe avec access internet
 - 8 Gb RAM pour la plate-forme continunous delivery (centos7)
@@ -46,7 +46,5 @@ alias dockerrmiall='docker images | grep -v "IMAGE ID" | awk '"'"'{print $3}'"'"
 vi /etc/group  
 docker:x:GID:traineegrp  
   
-- creation du repertoire des volumes avec les bons droits
-mkdir -p /volumes ; chgrp docker /volumes ; chmod 777 /volumes  
 - configuration de routage pour les conteneurs  
 sudo iptables -A DOCKER -p tcp -j ACCEPT

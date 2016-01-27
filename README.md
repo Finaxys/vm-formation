@@ -1,7 +1,6 @@
 # vm-formation (centos 7)
 
 ## creation d'un compte perso sur la VM avec droits de sudo root 
-traineegrp
 
 ## prepa des envts de developpement (staff) a faire en sudo root
 - installation docker, docker-compose, git, java 8  

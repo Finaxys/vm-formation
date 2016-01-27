@@ -1,8 +1,12 @@
 # vm-formation (centos 7)
 
+Rappels : deux VMs par groupe avec access internet
+- 8 Gb RAM pour la plate-forme continunous delivery (centos7)
+- 2 Gb RAM pour la partie "run on cloud" (ubuntu 14.04)
+
 ## creation d'un compte perso sur la VM avec droits de sudo root 
 
-## prepa des envts de developpement (staff) a faire en sudo root
+## prepa des VMS continuous delivery (staff) a faire en sudo root
 - installation docker, docker-compose, git, java 8  
 wget -qO- https://get.docker.com/ | sh  
 curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose ; chmod +x /usr/bin/docker-compose

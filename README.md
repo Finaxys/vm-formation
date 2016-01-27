@@ -33,14 +33,6 @@ mkdir -p /volumes ; chgrp docker /volumes ; chmod 777 /volumes
 - configuration de routage pour les conteneurs  
 sudo iptables -A DOCKER -p tcp -j ACCEPT
 
-## creation d'un scenario de test sur le conteneur
-- verifier l'URL http://<VM>:<port_80_mappe>/accounts/b73cf3a6-8f29-4ef1-955a-94c7efae01af : doit correspondre a la carte 5555444433331111
-- installer gatling en local (http://gatling.io/#/download) et lancer le recorder en mode proxy 8000
-- configurer un navigateur sur ce proxy et ouvrir l'URL http://<VM>:<port_80_mappe>/accounts/b73cf3a6-8f29-4ef1-955a-94c7efae01af
-- enregistrer la sequence (C:\dev\gatling-charts-highcharts-bundle-2.1.7\user-files\simulations\RecordedSimulation.scala) et la committer dans le projet  
-- relancer la sequence comme suit :  
-gatling.bat --simulations-folder C:\Users\sguclu\git\sguclu\bluebank-atm-server --simulation CheckATMConnectivity
-
 ## mise en place de la metrologie (elastic) sur jenkins
 - installer le plugin elastic sur jenkins  
 docker exec -ti traineegrp${TRAINEEGRPID}-jenkins java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin logstash -restart  
@@ -61,12 +53,7 @@ ATTENTION : certaines informations sensibles (password etc) ne sont pas obfusqu√
 - sur l'axe Y choisir un sum sur data.buildDuration  
 - en X, subagregation sur le term PIPELINE_VERSION, Order TOP size 100, sum of data.buildDuration  
 - en split bars choisir le term correspondant a data.projectName, Order TOP size 100, Order by Custom Metric Count  
-- voir l'affichage : les champs sont tronqu√©s en abcisse!  
+
 - sauver la visu en DURATION_PER_VERSION  
-- nettoyer l'index  
-docker exec -ti traineegrp-elk  curl -XDELETE 'http://localhost:9200/jenkins'  
-- Renommer chaque job en QUALIFY - PACKAGE - PUSH - RUN et relancer l'analyse 2-3 fois  
+
 - Creer un dashboard avec la visu DURATIONS_PER_VERSION a gauche, et la request PHASE_PER_VERSION a droite  
-  
-- ## creation d'une feature pour pousser le pipeline de bout en bout  
-  

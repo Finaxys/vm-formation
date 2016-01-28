@@ -15,15 +15,18 @@ curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose
 chmod +x /usr/bin/docker-compose
 EOF
 
-2. Creation du fichier docker-compose.yml
+2. Creation du fichier https://github.com/Finaxys/vm-formation/blob/master/MESOS-MARATHON-DOCKER-JENKINS/docker-compose.yml 
 
 3. Lancement de la stack complète:
 export HOST_IP=<IP_DU_HOST> ; export MESOS_RESOURCES="ports(*):[31000-32000]" ; docker-compose up -d
-GUI de http://178.33.83.136:5050/ et http://178.33.83.136:8080/), pour cela j'ai utilisé les noms réseau fournis par les links Docker et j'ai mis le master en écoute sur 0.0.0.0 + le mode privilégié pour rattacher les conteneurs à la VM, et tout ceci sans networking host.
+GUI mesos :  http://<IP_DU_HOST>:5050/
+GUI marathon : http://<IP_DU_HOST>:8080/
 
 4. installation de jenkins 
-J'ai repris ta commande telle quelle :  curl -X PUT -H "Content-Type: application/json" http://localhost:8080/v2/apps/jenkins?force=true -d@jenkins.json
+curl -X PUT -H "Content-Type: application/json" http://localhost:8080/v2/apps/jenkins?force=true -d@jenkins.json
+GUI Jenkins : http://<IP_DU_HOST>:31000
 
-5. Le jenkins est bien accessible sur http://178.33.83.136:31000, redémarre quand je stoppe/kill le container et garde toutes les données vives, c'est fantastique.
-
-Merci d'avoir pris le temps de dégrossir le sujet, avec cela nous allons pouvoir bien avancer pour la suite. Si tu veux refaire ce genre de choses mais avec trois serveurs/VMs différentes, il te faudra un docker machine sur chacune et cluster swarm (qui va lui-même créer un cluster de docker engines). Après faire un cluster qui va gérer un autre cluster ça semble assez risqué. Laurent tu corrigeras au besoin?
+Pour mutualiser sur plusieurs hosts : 
+docker machine + cluster swarm?
+docker networking entre hosts? 
+autre?

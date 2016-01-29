@@ -5,10 +5,10 @@ Rappels : deux VMs par groupe avec access internet
 - 8 Gb RAM pour la plate-forme continunous delivery (centos7)  
 - 2 Gb RAM pour la partie "run on cloud" (ubuntu 14.04)  
   
-## creation d'un compte perso sur la VM avec droits de sudo root  
+## Creation d'un compte perso sur la VM avec droits de sudo root  
   
-## prepa des VMS continuous delivery (staff) a faire en sudo root  
-- installation docker, docker-compose, git, java 8  
+## Prepa des VMS continuous delivery (staff) a faire en sudo root  
+- Installation docker, docker-compose, git, java 8  
 ```  
 wget -qO- https://get.docker.com/ | sh  
 curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose  
@@ -16,19 +16,19 @@ chmod +x /usr/bin/docker-compose
 sudo yum install -y git java  
 ```  
    
-- demarrage et activation du service docker  
+- Demarrage et activation du service docker  
 ```  
 sudo service docker start  
 sudo chkconfig docker on  
 ```  
   
-- modification de la commande de démarrage de docker a cause du bug https://github.com/docker/docker/issues/17653  
+- Modification de la commande de démarrage de docker a cause du bug https://github.com/docker/docker/issues/17653  
 ```  
 sudo vi /usr/lib/systemd/system/docker.service)  
 ```  
 ExecStart=/usr/bin/docker daemon --exec-opt native.cgroupdriver=cgroupfs -H fd://  
   
-- creation du compte traineegrp et droits de sudo (en root)  
+- Creation du compte traineegrp et droits de sudo (en root)  
 ```  
 sudo bash  
 export PASSWORD=<password>  
@@ -43,7 +43,7 @@ visudo
 ALL ALL=(root) NOPASSWD: /bin/docker  
 ```  
   
-- creation des volumes pour le compte traineegrp  
+- Creation des volumes pour le compte traineegrp  
 ```  
 for service in jenkins nexus sonar elk; do mkdir -p /volumes/${service} ; done; done  
 mkdir -p /volumes/sonar/data  
@@ -51,7 +51,7 @@ mkdir -p /volumes/sonar/extensions
 chown -R 1000:1000 /volumes/jenkins  
 chown -R 200:200 /volumes/nexus  
 ```  
-- creation d'alias docker pour faciliter les choses  
+- Creation d'alias docker pour faciliter les choses  
 ```  
 sudo vi /etc/profile.d/dockercmds.sh  
 ```  
@@ -62,21 +62,32 @@ alias dockerrmall='docker ps -a | grep -v CONTAINER | awk '"'"'{print $1}'"'"' |
 alias dockerrmiall='docker images | grep -v "IMAGE ID" | awk '"'"'{print $3}'"'"' | xargs docker rmi'  
 ```  
 
-- ajout du compte traineegrp dans le groupe docker  
+- Ajout du compte traineegrp dans le groupe docker  
 ```  
 vi /etc/group  
 docker:x:GID:traineegrp  
 ```  
 
-- configuration de routage pour les conteneurs  
+- Configuration de routage pour les conteneurs  
 ```  
 sudo iptables -A DOCKER -p tcp -j ACCEPT  
 ```  
 
-- installation ansible  
+## ALTERNATIVE 
+
+- Installation ansible  
 ```  
 sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm  
 sudo yum -y update  
 sudo yum -y install ansible  
 ansible --version  
 ```  
+
+- Creation du playbook.yml https://github.com/Finaxys/vm-formation/blob/master/FACTORY_SETUP/playbook.yml  
+  
+- Creation du fichier host.ansible https://github.com/Finaxys/vm-formation/blob/master/FACTORY_SETUP/playbook.yml   
+  
+- Execution du playbook en mode test (enlever l'option -C pour faire en vrai)  
+```
+ansible-playbook -i host.ansible -C  playbook.yml
+```

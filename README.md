@@ -84,7 +84,7 @@ ansible --version
 
 - Creation du playbook.yml https://github.com/Finaxys/vm-formation/blob/master/FACTORY_SETUP/playbook.yml  
   
-- Creation du fichier host.ansible https://github.com/Finaxys/vm-formation/blob/master/FACTORY_SETUP/playbook.yml   
+- Creation du fichier https://github.com/Finaxys/vm-formation/blob/master/FACTORY_SETUP/host.ansible   
   
 - Execution du playbook en mode test (enlever l'option -C pour faire en vrai)  
 ```

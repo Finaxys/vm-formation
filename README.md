@@ -15,13 +15,11 @@ curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose
 chmod +x /usr/bin/docker-compose  
 sudo yum install -y git java  
 ```  
-   
 - Demarrage et activation du service docker  
 ```  
 sudo service docker start  
 sudo chkconfig docker on  
 ```  
-  
 - Modification de la commande de démarrage de docker a cause du bug https://github.com/docker/docker/issues/17653  
 ```  
 sudo vi /usr/lib/systemd/system/docker.service)  
@@ -34,8 +32,9 @@ sudo bash
 export PASSWORD=<password>  
 useradd traineegrp ; echo ${PASSWORD} | passwd --stdin traineegrp  
 ```  
-
-```
+  
+- Edition du sudoer 
+```  
 visudo  
 ```  
 - Ajouter ceci  

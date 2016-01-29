@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  remote_user: sguclu
+  sudo: yes
+  tasks:
+  
+  - name: Install docker (standard method)
+    shell: wget -qO- https://get.docker.com/ | sh  
+  
+  - name: Install docker-compose (standard method)
+    shell: curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose  
+  
+  - name: Make docker-compose executable
+    acl: name=/usr/bin/docker-compose permissions=+x
+  
+  - name: Install git client (yum)
+    yum: pkg=git state=present
+    
+  - name: Install java client (yum)
+    yum: name=java state=present
+  
+  - name: Activate and start docker service
+    service: name=docker required=started enabled=yes
+    
+  - name: Patch the docker issue https://github.com/docker/docker/issues/17653
+    lineinfile: dest=/usr/lib/systemd/system/docker.service state=present regexp=^ExecStart= line="ExecStart=/usr/bin/docker daemon --exec-opt native.cgroupdriver=cgroupfs -H fd://"
+
+  - name : Create the traineegrp user
+    user: name=traineegrp usergroups="traineegrp,docker" password=$6$W7ZiPYhU$We1NsDUTeYLe3NR/o7u.XScPIt.l8zYWLnpuBc1CddTuL0tXjItjajOAypSuNqA70IMMAgLvi/WB23b.j.WgK1
+    
+  - name: Create docker volumes 
+    file: path=/volumes/sonar/data state=directory mode=0777 
+    file: path=/volumes/sonar/extensions state=directory mode=0777
+    file: path=/volumes/sonar/jenkins state=directory mode=0777 owner=1000 group=1000 
+    file: path=/volumes/sonar/nexus state=directory mode=0777 owner=200 group=200 
+    file: path=/volumes/sonar/sonar state=directory mode=0777
+  
+  - name: Copy dockercmds.h in /etc/profile.d
+    copy: src=dockercmds.sh dest=/etc/profile/dockercmds.sh  mode="+x"
+
+  - name: Allow docker network routing
+    iptables: chain=DOCKER protocol=tcp jump=ACCEPT
+  
+  

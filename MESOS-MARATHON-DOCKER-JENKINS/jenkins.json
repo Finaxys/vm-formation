@@ -1,0 +1,36 @@
+{
+        "id": "jenkins",
+        "cpus": 1,
+        "mem": 512.0,
+        "instances": 1,
+        "env": {
+                "JENKINS_OPTS" : "--prefix=/jenkins"
+        },
+        "container": {
+                "docker": {
+                        "image": "jenkins",
+                        "network": "BRIDGE",
+                        "portMappings": [
+                                { "containerPort": 8080, "hostPort": 31000 }
+                        ]
+                },
+                "volumes": [
+                        {
+                        "containerPath": "/var/jenkins_home",
+                        "hostPath": "/data/forge/jenkins/impl/base",
+                        "mode": "RW"
+                        }
+                ]
+        },
+        "healthChecks": [
+    {
+      "protocol": "COMMAND",
+      "command": { "value": "curl -f -X GET http://178.33.83.136:31000/jenkins" },
+      "gracePeriodSeconds": 5,
+      "intervalSeconds": 20,
+          "timeoutSeconds": 10,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+
+}

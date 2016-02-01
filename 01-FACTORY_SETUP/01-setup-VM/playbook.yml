@@ -20,7 +20,7 @@
     shell: "curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose"
 
   - name: Make docker-compose executable
-    acl: name=/usr/bin/docker-compose permissions="a+x"
+    file: name=/usr/bin/docker-compose mode="a+x"
 
   - name: Activate and start docker service
     service: name=docker state=started enabled=yes

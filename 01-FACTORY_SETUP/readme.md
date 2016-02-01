@@ -2,14 +2,49 @@
 Rappel : deux VMs par groupe avec access internet  
 - 8 Gb RAM pour la plate-forme continunous delivery (centos7)  
 - 2 Gb RAM pour la partie "run on cloud" (ubuntu 14.04)  
-
+ 
 Code : https://github.com/Finaxys/bluebank-atm-server  
   
-## CONFIGURATION MANUELLE
-
-## Creation d'un compte perso sur la VM avec droits de sudo root  
+## CONFIGURATION AUTOMATIQUE (CENTOS 7 VAGRANT AVEC GIT/ANSIBLE)  
+ 
+- Installation de l'image vagrant  
+```  
+vagrant init wittman/centos-7.2-ansible
+vagrant up
+``` 
   
-## Prepa des VMS continuous delivery (staff) a faire en sudo root  
+Compte utilisé : vagrant  
+  
+- Installation ansible et git (inutile avec l'image wittman/centos-7.2-ansible qui contient deja ansible et git?) 
+```  
+sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm  
+sudo yum -y update  
+sudo yum -y install ansible git 
+ansible --version  
+```  
+
+- Recuperation du repo https://github.com/Finaxys/vm-formation/
+```  
+git clone https://github.com/Finaxys/vm-formation
+```  
+Execution du playbook ansible qui va tout configurer
+```  
+ansible-playbook -i vm-formation/01-FACTORY_SETUP/01-setup-VM/host.ansible vm-formation/01-FACTORY_SETUP/01-setup-VM/playbook.yml  
+```  
+
+La VM a maintenant un moteur docker configuré et utilisable par le compte traineegrp.  
+Le montage de la software factory peut se faire maintenant comme ceci:  
+```  
+sudo su - traineegrp  
+git clone https://github.com/Finaxys/vm-formation  
+cd vm-formation/01-FACTORY_SETUP/02-create-software-factory/
+docker-compose up
+```  
+  
+## CONFIGURATION MANUELLE (AUTRES VMs SANS OUTIL PAR DEFAUT)
+
+Compte utilisé : compte perso avec des droits de sudo root  
+  
 - Installation docker, docker-compose, git, java 8  
 ```  
 wget -qO- https://get.docker.com/ | sh  
@@ -73,22 +108,3 @@ docker:x:GID:traineegrp
 ```  
 sudo iptables -A DOCKER -p tcp -j ACCEPT  
 ```  
-
-## CONFIGURATION AUTOMATIQUE 
-
-- Installation ansible (ou mieux, prendre l'image https://atlas.hashicorp.com/mlazarov/boxes/centos-7.0-ansible qui contient deja ansible et git?) 
-```  
-sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm  
-sudo yum -y update  
-sudo yum -y install ansible  
-ansible --version  
-```  
-
-- Creation du playbook.yml https://github.com/Finaxys/vm-formation/blob/master/FACTORY_SETUP/playbook.yml  
-  
-- Creation du fichier https://github.com/Finaxys/vm-formation/blob/master/FACTORY_SETUP/host.ansible   
-  
-- Execution du playbook en mode test (enlever l'option -C pour faire en vrai)  
-```
-ansible-playbook -i host.ansible -C  playbook.yml
-```

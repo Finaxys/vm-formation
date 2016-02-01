@@ -32,13 +32,13 @@
     user: name=traineegrp groups="docker" password=$6$W7ZiPYhU$We1NsDUTeYLe3NR/o7u.XScPIt.l8zYWLnpuBc1CddTuL0tXjItjajOAypSuNqA70IMMAgLvi/WB23b.j.WgK1
 
   - name: Create docker volume /volumes/sonar/data
-    file: path=/volumes/sonar/data state=directory owner=1001 group=1001
+    file: path=/volumes/sonar/data state=directory owner=1000 group=1000
 
   - name: Create docker volume /volumes/sonar/extensions
-    file: path=/volumes/sonar/extensions state=directory owner=1001 group=1001
+    file: path=/volumes/sonar/extensions state=directory owner=1000 group=1000
 
   - name: Create docker volume /volumes/jenkins
-    file: path=/volumes/jenkins state=directory owner=1001 group=1001
+    file: path=/volumes/jenkins state=directory owner=1000 group=1000
 
   - name: Create docker volume /volumes/nexus
     file: path=/volumes/nexus state=directory owner=200 group=200

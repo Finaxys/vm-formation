@@ -2,10 +2,16 @@
 Rappel : deux VMs par groupe avec access internet  
 - 8 Gb RAM pour la plate-forme continunous delivery (centos7)  
 - 2 Gb RAM pour la partie "run on cloud" (ubuntu 14.04)  
-
+ 
 Code : https://github.com/Finaxys/bluebank-atm-server  
   
-## CONFIGURATION AUTOMATIQUE (CENTOS 7 VAGRANT AVEC GIT/ANSIBLE)
+## CONFIGURATION AUTOMATIQUE (CENTOS 7 VAGRANT AVEC GIT/ANSIBLE)  
+ 
+- Installation de l'image vagrant  
+```  
+vagrant init wittman/centos-7.2-ansible
+vagrant up
+``` 
   
 Compte utilisé : vagrant  
   

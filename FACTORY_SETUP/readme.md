@@ -1,10 +1,12 @@
-# vm-formation (centos 7)  
-https://github.com/Finaxys/bluebank-atm-server  
-  
-Rappels : deux VMs par groupe avec access internet  
+# FORMATION CD  
+Rappel : deux VMs par groupe avec access internet  
 - 8 Gb RAM pour la plate-forme continunous delivery (centos7)  
 - 2 Gb RAM pour la partie "run on cloud" (ubuntu 14.04)  
+
+Code : https://github.com/Finaxys/bluebank-atm-server  
   
+## CONFIGURATION MANUELLE
+
 ## Creation d'un compte perso sur la VM avec droits de sudo root  
   
 ## Prepa des VMS continuous delivery (staff) a faire en sudo root  

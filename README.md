@@ -74,7 +74,7 @@ sudo iptables -A DOCKER -p tcp -j ACCEPT
 
 ## ALTERNATIVE 
 
-- Installation ansible  
+- Installation ansible (ou mieux, prendre l'image https://atlas.hashicorp.com/mlazarov/boxes/centos-7.0-ansible qui contient deja ansible et git?) 
 ```  
 sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm  
 sudo yum -y update  

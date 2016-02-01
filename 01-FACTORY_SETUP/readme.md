@@ -104,7 +104,7 @@ vi /etc/group
 docker:x:GID:traineegrp  
 ```  
 
-- Configuration de routage pour les conteneurs  
+- Configuration de routage pour les conteneurs : pas utile à priori?
 ```  
 sudo iptables -A DOCKER -p tcp -j ACCEPT  
 ```  

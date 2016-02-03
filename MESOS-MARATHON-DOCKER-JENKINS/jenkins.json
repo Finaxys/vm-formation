@@ -1,7 +1,7 @@
 {
         "id": "jenkins",
         "cpus": 1,
-        "mem": 512.0,
+        "mem": 1024.0,
         "instances": 1,
         "env": {
                 "JENKINS_OPTS" : "--prefix=/jenkins"
@@ -24,13 +24,12 @@
         },
         "healthChecks": [
     {
-      "protocol": "COMMAND",
-      "command": { "value": "curl -f -X GET http://178.33.83.136:31000/jenkins" },
+      "protocol": "HTTP",
+      "path": "/jenkins",
       "gracePeriodSeconds": 5,
       "intervalSeconds": 20,
-          "timeoutSeconds": 10,
+      "timeoutSeconds": 10,
       "maxConsecutiveFailures": 3
     }
   ]
-
 }

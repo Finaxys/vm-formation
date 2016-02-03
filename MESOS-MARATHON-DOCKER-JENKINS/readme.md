@@ -34,8 +34,20 @@ curl -X PUT -H "Content-Type: application/json" http://localhost:8080/v2/apps/je
 GUI Jenkins : http://<IP_DU_HOST>:31000  
 ```  
   
+ATTENTION : pour faire fonctionner le healthcheck, il a fallu mettre à jour le routage de la VM comme suit:
+- autoriser le routage vers/depuis le network DOCKER  
+```  
+sudo iptables -A INPUT -i docker0 -j ACCEPT  
+``` 
+- reordonner les regles de routage de forwarding  
+=> S'assurer que "-A FORWARD -i docker0 -o docker0 -j ACCEPT" est au-dessus de "-A FORWARD -j REJECT --reject-with icmp-host-prohibited"
+- Mettre à jour la commande de démarrage du service Docker dans /usr/lib/systemd/system/docker.service comme ceci:  
+```  
+ExecStart=/usr/bin/docker daemon --exec-opt native.cgroupdriver=cgroupfs -H fd://  
+```  
+- Remplacer le healthcheck "COMMAND" par un check "HTTP"  
+
 Pour mutualiser sur plusieurs hosts :  
 docker machine + cluster swarm?  
 docker networking entre hosts?  
 autre?  
-  
